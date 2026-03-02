@@ -54,6 +54,19 @@ export function Sidebar() {
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const activeCategory = searchParams.get("category");
+    const [currentHash, setCurrentHash] = React.useState("");
+
+    React.useEffect(() => {
+        // Set initial hash
+        setCurrentHash(window.location.hash.replace("#", ""));
+
+        const handleHashChange = () => {
+            setCurrentHash(window.location.hash.replace("#", ""));
+        };
+
+        window.addEventListener("hashchange", handleHashChange);
+        return () => window.removeEventListener("hashchange", handleHashChange);
+    }, []);
 
     return (
         <div className="w-full pr-4">
@@ -70,7 +83,6 @@ export function Sidebar() {
                             const isExactPath = pathname === purePath;
 
                             // Handle Hash-based matching for Docs
-                            const currentHash = typeof window !== 'undefined' ? window.location.hash.replace('#', '') : '';
                             const matchesHash = itemHash ? currentHash === itemHash : !currentHash;
 
                             // Handle Category-based matching for Components
