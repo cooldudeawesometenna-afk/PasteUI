@@ -86,7 +86,9 @@ export const Hero = () => {
                         Explore Library <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </Link>
                     <a
-                        href="https://github.com"
+                        href="https://github.com/shayanshahDeveloper/PasteUI"
+                        target="_blank"
+                        rel="noreferrer"
                         className="hero-cta w-full sm:w-auto px-10 py-5 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-foreground font-black rounded-2xl hover:bg-black/10 dark:hover:bg-white/10 transition-all flex items-center justify-center gap-3"
                     >
                         GitHub <span className="opacity-40">1.2k Stars</span>

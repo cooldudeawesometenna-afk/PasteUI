@@ -60,7 +60,7 @@ export const Navbar = () => {
                     <div className="w-px h-6 bg-black/10 dark:bg-white/10 mx-2" />
                     <ThemeToggle />
                     <a
-                        href="https://github.com"
+                        href="https://github.com/shayanshahDeveloper/PasteUI"
                         target="_blank"
                         rel="noreferrer"
                         className="text-neutral-400 hover:text-foreground transition-colors"

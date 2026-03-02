@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
     Book,
@@ -32,8 +33,8 @@ const sidebarConfig: SidebarGroup[] = [
         title: "GETTING STARTED",
         items: [
             { title: "Introduction", href: "/docs", icon: <Book className="w-4 h-4" /> },
-            { title: "Installation", href: "/docs#installation", icon: <Zap className="w-4 h-4" /> },
-            { title: "Theming", href: "/docs#theming", icon: <Palette className="w-4 h-4" />, label: "New" },
+            { title: "Installation", href: "/docs#quick-start", icon: <Zap className="w-4 h-4" /> },
+            { title: "Theming", href: "/docs#design-tokens", icon: <Palette className="w-4 h-4" />, label: "New" },
         ],
     },
     {
@@ -97,23 +98,33 @@ export function Sidebar() {
                                 <Link
                                     key={i}
                                     href={item.href}
+                                    onClick={() => {
+                                        const [, hash] = item.href.split("#");
+                                        setCurrentHash(hash || "");
+                                    }}
                                     className={cn(
-                                        "group flex items-center justify-between px-3 py-2 rounded-xl text-sm font-bold transition-all border border-transparent",
+                                        "group flex items-center justify-between px-3 py-2 rounded-xl text-sm font-bold transition-all border",
                                         isActive
-                                            ? "bg-primary/10 border-primary/20 text-foreground"
-                                            : "text-neutral-500 hover:text-foreground hover:bg-black/[0.03] dark:hover:bg-white/[0.03]"
+                                            ? "bg-primary/10 border-primary/30 text-primary shadow-[0_0_15px_rgba(124,58,237,0.1)]"
+                                            : "border-transparent text-neutral-500 hover:text-foreground hover:bg-black/[0.03] dark:hover:bg-white/[0.03]"
                                     )}
                                 >
                                     <div className="flex items-center gap-3">
                                         <div className={cn(
                                             "transition-colors",
-                                            isActive ? "text-primary" : "text-neutral-600 group-hover:text-foreground"
+                                            isActive ? "text-primary scale-110" : "text-neutral-600 group-hover:text-foreground"
                                         )}>
                                             {item.icon}
                                         </div>
-                                        <span>{item.title}</span>
+                                        <span className={cn(isActive && "tracking-tight")}>{item.title}</span>
                                     </div>
-                                    {item.label && (
+                                    {isActive && (
+                                        <motion.div
+                                            layoutId="active-indicator"
+                                            className="w-1.5 h-1.5 rounded-full bg-primary"
+                                        />
+                                    )}
+                                    {item.label && !isActive && (
                                         <span className="px-1.5 py-0.5 bg-primary text-[8px] font-black text-white rounded-md tracking-tighter uppercase">
                                             {item.label}
                                         </span>
