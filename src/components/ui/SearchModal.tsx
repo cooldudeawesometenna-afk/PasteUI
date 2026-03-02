@@ -79,7 +79,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
                                 <input
                                     type="text"
                                     autoFocus
-                                    placeholder="Search components, templates, docs..."
+                                    placeholder="Search components or docs..."
                                     className="flex-1 bg-transparent border-none outline-none text-foreground placeholder:text-neutral-500 text-lg"
                                     value={query}
                                     onChange={(e) => setQuery(e.target.value)}

@@ -38,9 +38,7 @@ export const Navbar = () => {
                     <Link href="/components" className="text-sm font-bold text-neutral-500 dark:text-neutral-400 hover:text-foreground transition-colors">
                         Components
                     </Link>
-                    <Link href="/templates" className="text-sm font-bold text-neutral-500 dark:text-neutral-400 hover:text-foreground transition-colors">
-                        Templates
-                    </Link>
+
                     <Link href="/showcase" className="text-sm font-bold text-neutral-500 dark:text-neutral-400 hover:text-foreground transition-colors">
                         Showcase
                     </Link>
@@ -99,9 +97,7 @@ export const Navbar = () => {
                             <Link href="/components" onClick={() => setIsOpen(false)} className="text-lg font-medium">
                                 Components
                             </Link>
-                            <Link href="/templates" onClick={() => setIsOpen(false)} className="text-lg font-medium">
-                                Templates
-                            </Link>
+
                             <Link href="/showcase" onClick={() => setIsOpen(false)} className="text-lg font-medium">
                                 Showcase
                             </Link>

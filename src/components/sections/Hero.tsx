@@ -5,6 +5,8 @@ import { ArrowRight, Box, MousePointer2, Zap, Rocket, Laptop } from "lucide-reac
 import Link from "next/link";
 import gsap from "gsap";
 
+import { BackgroundBoxes } from "../ui/BackgroundBoxes";
+
 export const Hero = () => {
     const titleRef = useRef(null);
     const subtitleRef = useRef(null);
@@ -50,14 +52,15 @@ export const Hero = () => {
     }, []);
 
     return (
-        <section ref={heroRef} className="relative pt-32 pb-32 overflow-hidden perspective-1000">
-            {/* Background elements */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10">
-                <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/20 blur-[150px] opacity-20 rounded-full" />
-                <div className="absolute bottom-[0%] right-[-10%] w-[40%] h-[40%] bg-secondary/20 blur-[150px] opacity-20 rounded-full" />
+        <section ref={heroRef} className="relative pt-32 pb-32 overflow-hidden">
+            {/* Background Interactive Effect */}
+            <div className="absolute inset-0 w-full h-full bg-background z-0 pointer-events-none" />
+
+            <div className="absolute inset-0 z-0 [mask-image:radial-gradient(ellipse_at_center,white,transparent_80%)]">
+                <BackgroundBoxes />
             </div>
 
-            <div className="container mx-auto px-4 text-center">
+            <div className="relative z-10 container mx-auto px-4 text-center">
                 <div className="hero-tag inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-xs font-bold text-primary mb-10 tracking-widest uppercase shadow-[0_0_20px_rgba(124,58,237,0.1)]">
                     <Rocket className="w-4 h-4" /> Version 2.0 is Live
                 </div>
