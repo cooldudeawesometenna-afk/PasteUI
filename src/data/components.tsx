@@ -89,6 +89,90 @@ const OTPPreview = () => {
     );
 }
 
+const FAQPreview = () => {
+    const [openIndex, setOpenIndex] = React.useState<number | null>(0);
+    const faqs = [
+        { q: "Is it free?", a: "Yes, for personal use." },
+        { q: "How to install?", a: "Use npm or yarn." }
+    ];
+    return (
+        <div className="space-y-2 w-full max-w-[280px]">
+            {faqs.map((faq, i) => (
+                <div key={i} className="border border-black/5 dark:border-white/5 rounded-2xl overflow-hidden bg-black/[0.02]">
+                    <button
+                        onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                        className="w-full p-3 flex justify-between items-center text-[10px] font-black text-left"
+                    >
+                        {faq.q}
+                        <span className={`transition-transform duration-300 ${openIndex === i ? 'rotate-180' : ''}`}>↓</span>
+                    </button>
+                    {openIndex === i && (
+                        <div className="px-3 pb-3 text-[9px] text-neutral-500 font-bold leading-tight animate-in slide-in-from-top-2">
+                            {faq.a}
+                        </div>
+                    )}
+                </div>
+            ))}
+        </div>
+    );
+}
+
+const TabsPreview = () => {
+    const [active, setActive] = React.useState(0);
+    const tabs = ["Design", "Code", "Assets"];
+    return (
+        <div className="w-full max-w-[240px]">
+            <div className="flex p-1 bg-black/5 dark:bg-white/5 rounded-xl gap-1">
+                {tabs.map((tab, i) => (
+                    <button
+                        key={tab}
+                        onClick={() => setActive(i)}
+                        className={`flex-1 py-1.5 text-[9px] font-black rounded-lg transition-all ${active === i ? 'bg-background shadow-sm text-primary' : 'text-neutral-500 hover:text-foreground'
+                            }`}
+                    >
+                        {tab}
+                    </button>
+                ))}
+            </div>
+            <div className="mt-4 p-4 bg-black/[0.02] rounded-xl border border-black/[0.03] text-[9px] font-bold text-neutral-400">
+                Viewing {tabs[active]} content...
+            </div>
+        </div>
+    );
+}
+
+const NotificationPreview = () => {
+    const [unread, setUnread] = React.useState(3);
+    return (
+        <div className="relative">
+            <button
+                onClick={() => setUnread(0)}
+                className="relative p-3 bg-black/5 dark:bg-white/5 rounded-2xl border border-black/5 hover:scale-105 transition-transform"
+            >
+                🔔
+                {unread > 0 && (
+                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[8px] font-black rounded-full flex items-center justify-center border-2 border-background animate-bounce">
+                        {unread}
+                    </span>
+                )}
+            </button>
+        </div>
+    );
+}
+
+const FAQItem = ({ q, a }: { q: string, a: string }) => {
+    const [isOpen, setIsOpen] = React.useState(false);
+    return (
+        <div className="p-4 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl transition-all">
+            <button onClick={() => setIsOpen(!isOpen)} className="w-full flex justify-between items-center text-left">
+                <span className="text-[10px] font-black">{q}</span>
+                <span className={`text-[10px] transition-transform ${isOpen ? 'rotate-180' : ''}`}>↓</span>
+            </button>
+            {isOpen && <p className="mt-2 text-[8px] text-neutral-500 leading-tight">{a}</p>}
+        </div>
+    );
+}
+
 const InputPreview = ({ placeholder }: { placeholder: string }) => {
     const [val, setVal] = React.useState("");
     return (
@@ -387,6 +471,18 @@ export const componentsData: UIComponent[] = [
         )
     },
     {
+        id: "tabs-interactive",
+        name: "Modern Tabs",
+        description: "Switch between views with smooth state transitions.",
+        category: "Navigation",
+        code: `<div className="flex p-1 bg-black/5 rounded-xl gap-1">
+  {['Design', 'Code'].map(tab => (
+    <button key={tab} className="flex-1 py-2 text-sm font-bold rounded-lg hover:bg-white transition-all">{tab}</button>
+  ))}
+</div>`,
+        preview: <TabsPreview />
+    },
+    {
         id: "alert-info",
         name: "Modern Alert",
         description: "Semantic info alert bar.",
@@ -419,15 +515,33 @@ export const componentsData: UIComponent[] = [
 </div>`,
         preview: (
             <div className="grid grid-cols-2 gap-4 w-full max-w-[320px]">
-                {['Revenue', 'Users'].map((label) => (
+                {['Sales', 'Users'].map((label) => (
                     <div key={label} className="p-4 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-3xl">
-                        <p className="text-neutral-500 text-[8px] font-bold uppercase tracking-tighter">{label}</p>
-                        <h3 className="text-lg font-black mt-1 leading-none">$24K</h3>
-                        <div className="mt-2 text-[8px] font-bold text-emerald-500">+12%</div>
+                        <div className="flex justify-between items-start">
+                            <p className="text-neutral-500 text-[8px] font-bold uppercase tracking-tighter">{label}</p>
+                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                        </div>
+                        <h3 className="text-lg font-black mt-1 leading-none">{label === 'Sales' ? '$12K' : '840'}</h3>
+                        <div className="mt-2 flex gap-0.5 h-4 items-end">
+                            {[2, 4, 3, 5].map((h, i) => (
+                                <div key={i} style={{ height: `${h * 20}%` }} className="w-full bg-primary/20 rounded-t-sm" />
+                            ))}
+                        </div>
                     </div>
                 ))}
             </div>
         )
+    },
+    {
+        id: "notification-bell",
+        name: "Notification Center",
+        description: "Interactive bell icon with unread indicator and bounce animation.",
+        category: "Dashboards",
+        code: `<div className="relative">
+  <button className="p-2 bg-black/5 rounded-xl">🔔</button>
+  <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full">3</span>
+</div>`,
+        preview: <NotificationPreview />
     },
     {
         id: "sidebar-layout",
@@ -456,7 +570,7 @@ export const componentsData: UIComponent[] = [
                 </div>
                 <div className="space-y-1 mb-8">
                     {['Dashboard', 'Inbox', 'Team'].map((item, i) => (
-                        <div key={item} className={`p-2 rounded-lg text-[9px] font-bold \${i === 0 ? 'bg-primary/10 text-primary' : 'text-neutral-500 hover:bg-black/5 transition-colors cursor-pointer'}`}>
+                        <div key={item} className={`p-2 rounded-lg text-[9px] font-bold ${i === 0 ? 'bg-primary/10 text-primary' : 'text-neutral-500 hover:bg-black/5 transition-colors cursor-pointer'}`}>
                             {item}
                         </div>
                     ))}
@@ -661,16 +775,7 @@ export const componentsData: UIComponent[] = [
     </details>
   ))}
 </div>`,
-        preview: (
-            <div className="space-y-2 w-full max-w-[320px] scale-90 origin-top-left">
-                {[1, 2].map(i => (
-                    <div key={i} className="p-4 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl flex justify-between items-center">
-                        <div className="h-3 w-3/4 bg-neutral-300 dark:bg-neutral-700 rounded" />
-                        <div className="h-4 w-4 bg-primary/20 rounded text-[8px] flex items-center justify-center font-bold">↓</div>
-                    </div>
-                ))}
-            </div>
-        )
+        preview: <FAQPreview />
     },
     {
         id: "hero-modern-mockup",
