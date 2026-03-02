@@ -9,44 +9,165 @@ export interface UIComponent {
     preview: React.ReactNode;
 }
 
+const ToastPreview = () => {
+    const [show, setShow] = React.useState(false);
+    return (
+        <div className="flex flex-col items-center gap-6 w-full">
+            <button
+                onClick={() => {
+                    setShow(true);
+                    setTimeout(() => setShow(false), 3000);
+                }}
+                className="px-6 py-2 bg-primary text-white text-xs font-black rounded-xl shadow-lg hover:scale-105 active:scale-95 transition-all"
+            >
+                Trigger Demo Toast
+            </button>
+            <div className="h-16 relative w-full flex justify-center">
+                {show && (
+                    <div className="absolute inset-x-0 mx-auto p-3 bg-black text-white rounded-xl border border-white/10 shadow-2xl flex gap-3 max-w-[200px] animate-in slide-in-from-bottom-4 fade-in duration-300">
+                        <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center shrink-0">✓</div>
+                        <div className="space-y-0.5 overflow-hidden">
+                            <div className="text-[10px] font-black leading-tight">Success!</div>
+                            <div className="text-[8px] opacity-60 leading-tight">Profile updated successfully.</div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
+
+const TogglePreview = () => {
+    const [isOn, setIsOn] = React.useState(true);
+    return (
+        <div
+            onClick={() => setIsOn(!isOn)}
+            className={`w-14 h-7 rounded-full p-1 cursor-pointer transition-colors duration-300 ${isOn ? 'bg-primary' : 'bg-black/10 dark:bg-white/10'}`}
+        >
+            <div className={`w-5 h-5 bg-white rounded-full transition-all duration-300 transform ${isOn ? 'translate-x-7' : 'translate-x-0 shadow-sm'}`} />
+        </div>
+    );
+}
+
+const StarsPreview = () => {
+    const [rating, setRating] = React.useState(4);
+    const [hover, setHover] = React.useState(0);
+    return (
+        <div className="flex gap-2 p-2 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5">
+            {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                    key={star}
+                    onClick={() => setRating(star)}
+                    onMouseEnter={() => setHover(star)}
+                    onMouseLeave={() => setHover(0)}
+                    className="transition-all transform hover:scale-125"
+                >
+                    <span className={`text-2xl ${(hover || rating) >= star ? 'text-amber-400 fill-amber-400' : 'text-neutral-300 dark:text-neutral-700'
+                        }`}>
+                        ★
+                    </span>
+                </button>
+            ))}
+        </div>
+    );
+}
+
+const OTPPreview = () => {
+    return (
+        <div className="flex gap-2 focus-within:scale-105 transition-transform">
+            {[1, 2, 3, 4].map(i => (
+                <input
+                    key={i}
+                    type="text"
+                    maxLength={1}
+                    className="w-8 h-10 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl text-center font-black text-sm text-primary focus:border-primary focus:outline-none transition-all"
+                    defaultValue={i === 1 ? "1" : ""}
+                    autoFocus={i === 1}
+                />
+            ))}
+        </div>
+    );
+}
+
+const InputPreview = ({ placeholder }: { placeholder: string }) => {
+    const [val, setVal] = React.useState("");
+    return (
+        <div className="relative w-full max-w-[200px]">
+            <input
+                type="text"
+                value={val}
+                onChange={(e) => setVal(e.target.value)}
+                placeholder={placeholder}
+                className="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl px-4 py-2 text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium"
+            />
+        </div>
+    );
+}
+
 export const componentsData: UIComponent[] = [
     // --- BUTTONS ---
     {
         id: "shiny-button",
         name: "Shiny Button",
-        description: "A button with a smooth gradient animation on hover.",
+        description: "A button with a shifting gradient and shadow effect.",
         category: "Buttons",
-        code: `<button className="relative px-6 py-3 font-bold text-foreground group outline-none overflow-hidden rounded-lg">
-  <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-purple-600 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-  <span className="absolute inset-0 w-full h-full border-2 border-black/20 dark:border-white/20 rounded-lg"></span>
-  <span className="relative z-10 transition-colors group-hover:text-white">Hover Me</span>
-</button>`,
-        preview: (
-            <button className="relative px-6 py-3 font-bold text-foreground group outline-none overflow-hidden rounded-lg">
-                <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-purple-600 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                <span className="absolute inset-0 w-full h-full border-2 border-black/20 dark:border-white/20 rounded-lg"></span>
-                <span className="relative z-10 transition-colors group-hover:text-white">Hover Me</span>
-            </button>
-        )
+        code: `<button className="px-6 py-3 bg-gradient-to-r from-primary to-secondary text-primary-foreground font-bold rounded-xl shadow-lg hover:shadow-primary/20 transition-all hover:scale-105 active:scale-95">Shiny Button</button>`,
+        preview: <button className="px-6 py-2 bg-gradient-to-r from-primary to-secondary text-primary-foreground text-xs font-black rounded-lg shadow-lg hover:scale-105 active:scale-95 transition-all">Shiny Demo</button>
     },
     {
         id: "bouncing-button",
         name: "Bouncing Button",
-        description: "A button that bounces when clicked.",
+        description: "Smooth hover bounce and satisfying click animation.",
         category: "Buttons",
-        code: `<button className="px-6 py-3 bg-primary text-white font-bold rounded-xl active:scale-90 transition-transform">Click Me</button>`,
-        preview: <button className="px-6 py-3 bg-primary text-white font-bold rounded-xl active:scale-95 transition-transform">Click Me</button>
+        code: `<button className="px-6 py-3 bg-primary text-white font-black rounded-xl transition-all hover:-translate-y-1 active:scale-90 shadow-[0_10px_0_theme(colors.primary.dark)]">Bounce</button>`,
+        preview: <button className="px-6 py-2 bg-primary text-white text-xs font-black rounded-lg transition-all hover:scale-110 active:scale-90 shadow-xl">Bounce Me</button>
     },
     {
         id: "outline-glow",
         name: "Outline Glow",
         description: "Border glow effect on hover.",
         category: "Buttons",
-        code: `<button className="px-6 py-3 border border-primary/50 text-primary rounded-xl hover:shadow-[0_0_15px_rgba(124,58,237,0.5)] transition-all">Glow</button>`,
+        code: `<button className="px-6 py-3 border border-primary/50 text-foreground rounded-xl hover:shadow-[0_0_15px_rgba(124,58,237,0.5)] transition-all">Glow</button>`,
         preview: <button className="px-6 py-3 border border-primary/50 text-foreground rounded-xl hover:shadow-[0_0_15px_rgba(124,58,237,0.5)] transition-all">Glow</button>
+    },
+    {
+        id: "pulse-neon",
+        name: "Pulse Neon",
+        description: "A button with a persistent neon pulse effect.",
+        category: "Buttons",
+        code: `<button className="relative px-8 py-3 bg-primary text-white font-black rounded-full shadow-[0_0_20px_rgba(124,58,237,0.4)] animate-pulse hover:animate-none transition-all">
+  Launch App
+</button>`,
+        preview: <button className="relative px-6 py-2 bg-primary text-white text-xs font-black rounded-full shadow-[0_0_20px_rgba(124,58,237,0.4)] animate-pulse hover:scale-105 transition-all">Launch App</button>
+    },
+    {
+        id: "retro-3d",
+        name: "Retro 3D",
+        description: "Offset 3D button with satisfying click animation.",
+        category: "Buttons",
+        code: `<button className="px-6 py-2 bg-primary text-white font-bold rounded-lg border-b-4 border-primary/60 active:border-b-0 active:translate-y-1 transition-all">
+  Push Me
+</button>`,
+        preview: <button className="px-6 py-2 bg-primary text-white text-sm font-bold rounded-lg border-b-4 border-primary/60 active:border-b-0 active:translate-y-1 transition-all">Push Me</button>
     },
 
     // --- INPUTS ---
+    {
+        id: "floating-label",
+        name: "Floating Label",
+        description: "Modern input with animated label behavior.",
+        category: "Inputs",
+        code: `<div className="relative pt-4">
+  <input type="text" id="email" placeholder=" " className="peer w-full bg-transparent border-b-2 border-neutral-300 dark:border-neutral-700 py-2 outline-none focus:border-primary transition-all" />
+  <label htmlFor="email" className="absolute left-0 top-4 text-neutral-500 transition-all peer-focus:-top-2 peer-focus:text-xs peer-focus:text-primary peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs">Email Address</label>
+</div>`,
+        preview: (
+            <div className="relative w-full max-w-[200px] pt-4">
+                <input type="text" id="prev-email" placeholder=" " className="peer w-full bg-transparent border-b border-neutral-300 dark:border-neutral-700 py-1 text-sm outline-none focus:border-primary transition-all" />
+                <label htmlFor="prev-email" className="absolute left-0 top-4 text-xs text-neutral-500 transition-all peer-focus:top-0 peer-focus:text-[10px] peer-focus:text-primary peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-[10px]">Email Address</label>
+            </div>
+        )
+    },
     {
         id: "search-input-glass",
         name: "Glass Search",
@@ -55,11 +176,7 @@ export const componentsData: UIComponent[] = [
         code: `<div className="relative group">
   <input type="text" placeholder="Search..." className="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl px-12 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all" />
 </div>`,
-        preview: (
-            <div className="relative w-full max-w-[240px]">
-                <input type="text" placeholder="Search..." className="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl px-10 py-2 text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all" />
-            </div>
-        )
+        preview: <InputPreview placeholder="Search..." />
     },
     {
         id: "modern-toggle",
@@ -69,14 +186,28 @@ export const componentsData: UIComponent[] = [
         code: `<div className="w-12 h-6 bg-black/10 dark:bg-white/10 rounded-full p-1 cursor-pointer">
   <div className="w-4 h-4 bg-primary rounded-full transition-all"></div>
 </div>`,
-        preview: (
-            <div className="w-12 h-6 bg-black/10 dark:bg-white/10 rounded-full p-1 cursor-pointer">
-                <div className="w-4 h-4 bg-primary rounded-full"></div>
-            </div>
-        )
+        preview: <TogglePreview />
     },
 
     // --- CARDS ---
+    {
+        id: "glass-card",
+        name: "Frosted Glass",
+        description: "Ultra-premium glassmorphism card with border-shimmer.",
+        category: "Cards",
+        code: `<div className="p-8 bg-white/5 backdrop-blur-xl border border-white/20 rounded-[2.5rem] shadow-2xl relative overflow-hidden group">
+  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+  <h3 className="text-2xl font-black relative z-10">Premium Plan</h3>
+  <p className="mt-4 text-neutral-400 relative z-10">Crystal clear UI components.</p>
+</div>`,
+        preview: (
+            <div className="p-6 bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl relative overflow-hidden group w-full max-w-[200px]">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-50" />
+                <h3 className="text-lg font-black relative z-10">Glassy</h3>
+                <div className="h-2 w-16 bg-white/20 rounded mt-2 relative z-10" />
+            </div>
+        )
+    },
     {
         id: "nft-card",
         name: "NFT Display Card",
@@ -184,8 +315,18 @@ export const componentsData: UIComponent[] = [
         category: "Cards",
         code: `<div className="mockup-window shadow-xl border border-black/10 dark:border-white/10 bg-black/5 dark:bg-black/50 p-6">Hello World</div>`,
         preview: (
-            <div className="mockup-window shadow-xl border border-black/10 dark:border-white/10 bg-black/5 dark:bg-black/50 p-6 w-full max-w-[280px]">
-                <div className="text-foreground text-[10px] font-mono opacity-50">Browser View</div>
+            <div className="rounded-xl shadow-2xl border border-black/10 dark:border-white/10 bg-background overflow-hidden w-full max-w-[280px] group">
+                <div className="h-6 bg-black/5 flex items-center px-4 gap-1.5 border-b border-black/5">
+                    <div className="w-2 h-2 rounded-full bg-red-400" />
+                    <div className="w-2 h-2 rounded-full bg-amber-400" />
+                    <div className="w-2 h-2 rounded-full bg-emerald-400" />
+                </div>
+                <div className="p-4 text-[10px] font-mono opacity-80 h-24 bg-black/[0.02] dark:bg-white/[0.01]">
+                    <div className="text-primary font-bold">const</div> app = {"{"} <br />
+                    &nbsp;&nbsp;name: <span className="text-emerald-500">"PasteUI"</span>,<br />
+                    &nbsp;&nbsp;status: <span className="text-amber-500">"Live"</span><br />
+                    {"}"};
+                </div>
             </div>
         )
     },
@@ -308,22 +449,28 @@ export const componentsData: UIComponent[] = [
   </div>
 </aside>`,
         preview: (
-            <div className="w-full max-w-[200px] border border-black/10 dark:border-white/10 rounded-3xl flex flex-col p-4 bg-background shadow-xl scale-90 origin-top-left">
-                <div className="w-6 h-6 bg-primary rounded-lg mb-6" />
-                <div className="space-y-1 mb-6">
-                    <div className="h-6 w-full bg-primary/20 rounded-lg" />
-                    <div className="h-6 w-full bg-black/5 dark:bg-white/5 rounded-lg" />
-                    <div className="h-6 w-full bg-black/5 dark:bg-white/5 rounded-lg" />
+            <div className="w-full max-w-[200px] border border-black/10 dark:border-white/10 rounded-3xl flex flex-col p-4 bg-background shadow-2xl scale-90 origin-top-left overflow-hidden">
+                <div className="flex items-center gap-2 mb-6">
+                    <div className="w-5 h-5 bg-primary rounded-md" />
+                    <span className="text-[10px] font-black uppercase">Fluxo</span>
                 </div>
-                <div className="mt-auto pt-4 border-t border-black/5 dark:border-white/5 flex gap-2">
-                    <div className="w-6 h-6 rounded-full bg-black/10 dark:bg-white/10" />
-                    <div className="h-2 w-12 bg-black/10 dark:bg-white/10 rounded mt-2" />
+                <div className="space-y-1 mb-8">
+                    {['Dashboard', 'Inbox', 'Team'].map((item, i) => (
+                        <div key={item} className={`p-2 rounded-lg text-[9px] font-bold \${i === 0 ? 'bg-primary/10 text-primary' : 'text-neutral-500 hover:bg-black/5 transition-colors cursor-pointer'}`}>
+                            {item}
+                        </div>
+                    ))}
+                </div>
+                <div className="mt-auto pt-4 border-t border-black/5 dark:border-white/5 flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-full bg-primary/20 border border-primary/30" />
+                    <div>
+                        <div className="text-[8px] font-bold leading-none">Alex S.</div>
+                        <div className="text-[6px] text-neutral-400 font-bold uppercase leading-tight">Pro Admin</div>
+                    </div>
                 </div>
             </div>
         )
     },
-
-    // --- LANDING PAGES ---
     {
         id: "hero-split",
         name: "Modern Split Hero",
@@ -376,15 +523,19 @@ export const componentsData: UIComponent[] = [
   ))}
 </div>`,
         preview: (
-            <div className="flex gap-3 w-full scale-75 origin-top-left overflow-x-auto pb-4 custom-scrollbar">
-                {['Free', 'Pro'].map((t) => (
-                    <div key={t} className="min-w-[160px] p-4 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-3xl shrink-0">
-                        <div className="text-[10px] uppercase font-black text-neutral-500 mb-2">{t}</div>
-                        <div className="text-2xl font-black mb-4">{t === 'Free' ? '$0' : '$29'}</div>
-                        <div className="space-y-1.5 mb-6">
-                            {[1, 2, 3].map(i => <div key={i} className="h-1.5 w-full bg-foreground/10 rounded" />)}
+            <div className="flex gap-4 w-full scale-90 origin-top-left overflow-x-auto pb-4 custom-scrollbar">
+                {['Starter', 'Pro'].map((t) => (
+                    <div key={t} className="min-w-[160px] p-5 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-3xl shrink-0 hover:border-primary/50 transition-colors">
+                        <div className="text-[10px] uppercase font-black text-primary mb-2">{t}</div>
+                        <div className="text-2xl font-black mb-4">{t === 'Starter' ? '$0' : '$29'}</div>
+                        <div className="space-y-2 mb-6">
+                            {['API Access', '24/7 Support'].map(f => (
+                                <div key={f} className="flex gap-2 items-center text-[10px] font-bold text-neutral-500">
+                                    <span className="text-primary text-[8px]">✓</span> {f}
+                                </div>
+                            ))}
                         </div>
-                        <div className="h-8 w-full bg-foreground rounded-xl" />
+                        <button className="h-8 w-full bg-foreground text-background text-[10px] font-black rounded-xl hover:scale-105 transition-transform">Get Started</button>
                     </div>
                 ))}
             </div>
@@ -403,9 +554,16 @@ export const componentsData: UIComponent[] = [
 </div>`,
         preview: (
             <div className="grid grid-cols-2 gap-2 w-full max-w-[300px] scale-90 origin-top-left auto-rows-[80px]">
-                <div className="col-span-2 row-span-1 bg-primary/10 rounded-2xl border border-primary/20 p-4 font-black text-[10px] text-primary">Main Feature</div>
-                <div className="bg-black/5 dark:bg-white/5 rounded-2xl border border-black/10 dark:border-white/10" />
-                <div className="bg-black/5 dark:bg-white/5 rounded-2xl border border-black/10 dark:border-white/10" />
+                <div className="col-span-2 row-span-1 bg-primary/10 rounded-2xl border border-primary/20 p-4 font-black">
+                    <span className="text-[10px] text-primary uppercase tracking-widest block mb-1">Performance</span>
+                    <div className="text-[8px] opacity-70 leading-tight">Lightning fast response times.</div>
+                </div>
+                <div className="bg-black/5 dark:bg-white/5 rounded-2xl border border-black/10 dark:border-white/10 p-3 flex flex-col justify-end">
+                    <div className="text-[8px] font-black uppercase tracking-tighter">Security</div>
+                </div>
+                <div className="bg-black/5 dark:bg-white/5 rounded-2xl border border-black/10 dark:border-white/10 p-3 flex flex-col justify-end">
+                    <div className="text-[8px] font-black uppercase tracking-tighter">Scalable</div>
+                </div>
             </div>
         )
     },
@@ -428,12 +586,12 @@ export const componentsData: UIComponent[] = [
   </div>
 </footer>`,
         preview: (
-            <footer className="w-full py-6 border-t border-black/10 dark:border-white/10 bg-background/50 rounded-2xl border border-black/5 dark:border-white/5">
-                <div className="flex justify-between px-4 items-center">
-                    <div className="h-4 w-12 bg-black/10 dark:bg-white/10 rounded" />
-                    <div className="flex gap-2">
-                        <div className="h-2 w-8 bg-black/5 dark:bg-white/5 rounded" />
-                        <div className="h-2 w-8 bg-black/5 dark:bg-white/5 rounded" />
+            <footer className="w-full py-4 border-t border-black/10 dark:border-white/10 bg-background/50 rounded-2xl border border-black/5 dark:border-white/5">
+                <div className="flex justify-between px-6 items-center">
+                    <div className="text-[10px] font-black tracking-tighter">PasteUI</div>
+                    <div className="flex gap-4">
+                        <div className="text-[8px] font-bold text-neutral-500 hover:text-primary transition-colors cursor-pointer">Terms</div>
+                        <div className="text-[8px] font-bold text-neutral-500 hover:text-primary transition-colors cursor-pointer">Privacy</div>
                     </div>
                 </div>
             </footer>
@@ -465,14 +623,21 @@ export const componentsData: UIComponent[] = [
   </table>
 </div>`,
         preview: (
-            <div className="w-full max-w-[320px] rounded-2xl border border-black/10 dark:border-white/10 overflow-hidden bg-background/50 scale-90 origin-top-left">
-                <div className="p-3 border-b border-black/5 bg-black/5 flex justify-between">
-                    <div className="h-2 w-full bg-neutral-300 rounded" />
+            <div className="w-full max-w-[340px] rounded-2xl border border-black/10 dark:border-white/10 overflow-hidden bg-background/50 scale-90 origin-top-left shadow-2xl">
+                <div className="p-4 border-b border-black/5 bg-black/[0.02] flex justify-between items-center">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400">Inventory</span>
+                    <button className="px-2 py-1 bg-primary text-white text-[8px] font-black rounded-md">Add New</button>
                 </div>
-                {[1, 2].map(i => (
-                    <div key={i} className="p-3 flex justify-between items-center border-b border-black/[0.03]">
-                        <div className="h-3 w-20 bg-black/10 dark:bg-white/10 rounded" />
-                        <div className="h-4 w-12 bg-emerald-500/10 rounded-lg" />
+                {[
+                    { n: "Header Section", v: "$42.0", s: "Live" },
+                    { n: "Bento Grid", v: "$99.9", s: "Draft" }
+                ].map((item) => (
+                    <div key={item.n} className="p-4 flex justify-between items-center border-b border-black/[0.03] hover:bg-black/[0.02] transition-colors">
+                        <div>
+                            <div className="text-[10px] font-black">{item.n}</div>
+                            <div className="text-[8px] text-neutral-500 font-bold">{item.v}</div>
+                        </div>
+                        <div className={`px-2 py-1 ${item.s === 'Live' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-amber-500/10 text-amber-500'} text-[8px] font-black rounded-md uppercase tracking-tighter`}>{item.s}</div>
                     </div>
                 ))}
             </div>
@@ -563,6 +728,217 @@ export const componentsData: UIComponent[] = [
                         </div>
                     </div>
                 ))}
+            </div>
+        )
+    },
+    {
+        id: "boxed-faq",
+        name: "Boxed FAQ Grid",
+        description: "A clean, multi-column grid layout for frequently asked questions.",
+        category: "FAQ",
+        code: `<div className="grid md:grid-cols-2 gap-8">
+  {[1, 2, 3, 4].map(i => (
+    <div key={i} className="p-8 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-[2.5rem]">
+      <h4 className="text-lg font-black mb-4">How do I get started?</h4>
+      <p className="text-neutral-500 font-bold leading-relaxed">Simply copy the code of any component and paste it into your Tailwind project.</p>
+    </div>
+  ))}
+</div>`,
+        preview: (
+            <div className="grid grid-cols-2 gap-3 w-full scale-95 origin-top-left">
+                {[
+                    { q: "Free to use?", a: "Yes, forever." },
+                    { q: "Open source?", a: "MIT Licensed." }
+                ].map((item) => (
+                    <div key={item.q} className="p-4 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl hover:border-primary/50 transition-colors cursor-pointer">
+                        <div className="text-[10px] font-black text-foreground mb-1 leading-tight">{item.q}</div>
+                        <div className="text-[8px] text-neutral-500 font-bold leading-tight">{item.a}</div>
+                    </div>
+                ))}
+            </div>
+        )
+    },
+
+    // --- NAVIGATION ---
+    {
+        id: "floating-dock",
+        name: "Floating Dock",
+        description: "A premium, Apple-inspired floating navigation bar.",
+        category: "Navigation",
+        code: `<div className="fixed bottom-10 left-1/2 -translate-x-1/2 px-6 py-4 bg-black/80 backdrop-blur-2xl border border-white/10 rounded-full flex gap-6 shadow-2xl">
+  {['🏠', '🔍', '⚙️', '👤'].map((icon, i) => (
+    <button key={i} className="text-2xl hover:scale-150 transition-transform duration-300 transform-gpu">{icon}</button>
+  ))}
+</div>`,
+        preview: (
+            <div className="px-4 py-2 bg-black/80 backdrop-blur-md rounded-full flex gap-4 border border-white/10 shadow-xl">
+                {['🏠', '🔍', '⚙️'].map((icon, i) => (
+                    <div key={i} className="text-sm cursor-pointer hover:scale-125 transition-all">
+                        {icon}
+                    </div>
+                ))}
+            </div>
+        )
+    },
+
+    // --- DASHBOARDS ---
+    {
+        id: "activity-feed",
+        name: "User Activity Feed",
+        description: "A clean stream of user actions and timeline events.",
+        category: "Dashboards",
+        code: `<div className="space-y-6">
+  {[1, 2, 3].map(i => (
+    <div key={i} className="flex gap-4 items-start">
+      <div className="w-10 h-10 rounded-full bg-primary/20 border border-primary/30 shrink-0" />
+      <div className="flex-1 pb-6 border-b border-black/5 dark:border-white/5">
+        <p className="text-sm font-bold leading-none">Alex uploaded a new file</p>
+        <p className="text-xs text-neutral-500 mt-2">2 hours ago</p>
+      </div>
+    </div>
+  ))}
+</div>`,
+        preview: (
+            <div className="space-y-4 w-full max-w-[240px] p-6 bg-black/[0.02] dark:bg-white/[0.01] rounded-[2rem] border border-black/[0.03]">
+                {[
+                    { u: "Sarah", a: "pushed code", t: "5m ago" },
+                    { u: "James", a: "created task", t: "1h ago" }
+                ].map((item, i) => (
+                    <div key={i} className="flex gap-3 group cursor-pointer">
+                        <div className="w-8 h-8 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                            <span className="text-[10px] font-black text-primary">{item.u[0]}</span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <div className="text-[10px] font-black truncate">{item.u} {item.a}</div>
+                            <div className="text-[8px] text-neutral-500 font-bold uppercase tracking-tight">{item.t}</div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        )
+    },
+
+    // --- LANDING PAGES ---
+    {
+        id: "partner-logos",
+        name: "Partner Logos",
+        description: "Subtle, interactive logo cloud for trust building.",
+        category: "Landing Pages",
+        code: `<div className="py-20 flex flex-wrap justify-center gap-12 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+  {['Microsoft', 'Google', 'Amazon', 'Meta', 'Apple'].map(logo => (
+      <span key={logo} className="text-2xl font-black tracking-tighter">{logo}</span>
+  ))}
+</div>`,
+        preview: (
+            <div className="flex gap-4 justify-center items-center py-6 w-full opacity-40 hover:opacity-100 transition-opacity bg-black/[0.02] rounded-3xl">
+                {['APPLE', 'GOOGLE', 'META'].map(logo => (
+                    <span key={logo} className="text-[9px] font-black tracking-tighter grayscale hover:grayscale-0 hover:text-primary transition-all cursor-crosshair">{logo}</span>
+                ))}
+            </div>
+        )
+    },
+
+    // --- FEEDBACK ---
+    {
+        id: "modern-toast",
+        name: "Magic Toast",
+        description: "A floating notification with glass effects and icons.",
+        category: "Feedback",
+        code: `<div className="fixed bottom-8 right-8 p-4 bg-black/90 text-white backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex items-center gap-4 animate-in slide-in-from-bottom-4">
+  <div className="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center">✓</div>
+  <div>
+    <h4 className="font-bold text-sm">Success!</h4>
+    <p className="text-xs opacity-60">Your profile has been updated.</p>
+  </div>
+</div>`,
+        preview: <ToastPreview />
+    },
+    {
+        id: "star-rating",
+        name: "Interactive Stars",
+        description: "A premium star-rating component with hover states.",
+        category: "Feedback",
+        code: `<div className="flex gap-1">
+  {[1, 2, 3, 4, 5].map(i => (
+    <button key={i} className="text-2xl text-amber-400 hover:scale-125 transition-transform">★</button>
+  ))}
+</div>`,
+        preview: <StarsPreview />
+    },
+    {
+        id: "otp-input",
+        name: "Security OTP",
+        description: "Modern 6-digit verification code input fields.",
+        category: "Inputs",
+        code: `<div className="flex gap-4 justify-center">
+  {[1, 2, 3, 4, 5, 6].map(i => (
+    <input key={i} type="text" maxLength={1} className="w-12 h-16 bg-black/5 dark:bg-white/5 border-2 border-black/10 dark:border-white/10 rounded-2xl text-center text-2xl font-black focus:border-primary focus:outline-none transition-all" />
+  ))}
+</div>`,
+        preview: <OTPPreview />
+    },
+    {
+        id: "sparkline-card",
+        name: "Sparkline Card",
+        description: "Stats card featuring a mini activity trendline.",
+        category: "Cards",
+        code: `<div className="p-6 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-[2rem]">
+  <div className="flex justify-between items-start mb-4">
+    <div>
+      <p className="text-xs font-bold text-neutral-500 uppercase tracking-widest">Growth</p>
+      <h3 className="text-2xl font-black">42.5%</h3>
+    </div>
+    <div className="flex gap-1 h-8 items-end">
+      {[4, 7, 3, 9, 5, 8].map((h, i) => (
+        <div key={i} style={{ height: \`\${h * 10}%\` }} className="w-1 bg-primary/40 rounded-full" />
+      ))}
+    </div>
+  </div>
+</div>`,
+        preview: (
+            <div className="p-4 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl w-full max-w-[180px]">
+                <div className="flex justify-between items-end">
+                    <div>
+                        <div className="text-[8px] font-black text-neutral-500 uppercase tracking-widest leading-none mb-1">Growth</div>
+                        <div className="text-lg font-black leading-none text-primary">42.5%</div>
+                    </div>
+                    <div className="flex gap-0.5 h-8 items-end">
+                        {[2, 5, 3, 6, 4].map((h, i) => (
+                            <div key={i} style={{ height: `${h * 15}%` }} className="w-1 bg-primary/40 rounded-full" />
+                        ))}
+                    </div>
+                </div>
+            </div>
+        )
+    },
+    {
+        id: "contact-glass",
+        name: "Glass Contact Form",
+        description: "A beautiful, transparent contact section for modern brands.",
+        category: "Landing Pages",
+        code: `<div className="max-w-4xl mx-auto p-12 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[3rem] shadow-2xl grid md:grid-cols-2 gap-12">
+  <div>
+    <h2 className="text-5xl font-black tracking-tighter mb-6">Let's talk.</h2>
+    <p className="text-neutral-400 font-bold leading-relaxed mb-8">Ready to transform your digital presence? Send us a message.</p>
+    <div className="space-y-4">
+      <div className="flex gap-4 font-bold"><span className="text-primary text-xl">📍</span> San Francisco, CA</div>
+      <div className="flex gap-4 font-bold"><span className="text-primary text-xl">✉️</span> hello@pasteui.com</div>
+    </div>
+  </div>
+  <form className="space-y-4">
+    <input type="text" placeholder="Name" className="w-full p-4 bg-white/5 border border-white/10 rounded-2xl focus:border-primary outline-none transition-all" />
+    <textarea placeholder="Message" className="w-full p-4 bg-white/5 border border-white/10 rounded-2xl h-32 focus:border-primary outline-none transition-all"></textarea>
+    <button className="w-full py-4 bg-primary text-white font-black rounded-2xl shadow-xl">Send Message</button>
+  </form>
+</div>`,
+        preview: (
+            <div className="p-5 bg-white/5 border border-white/10 rounded-3xl w-full max-w-[320px] scale-75 origin-top-left shadow-2xl">
+                <div className="text-xl font-black tracking-tighter mb-4">Let's talk.</div>
+                <div className="space-y-2">
+                    <div className="bg-white/5 border border-white/10 px-3 py-2 rounded-xl text-[10px] text-neutral-400">Name</div>
+                    <div className="bg-white/5 border border-white/10 px-3 py-6 rounded-xl text-[10px] text-neutral-400">Message...</div>
+                    <button className="w-full py-2.5 bg-primary text-white text-[10px] font-black rounded-xl shadow-lg">Send</button>
+                </div>
             </div>
         )
     }
