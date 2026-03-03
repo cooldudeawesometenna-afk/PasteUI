@@ -126,12 +126,12 @@
 @layer base {
   * {
     @apply border-border;
-    cursor: none !important;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
+    cursor: auto !important;
   }
 }
 
@@ -172,11 +172,6 @@
 
 .text-gradient-vibrant {
   @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-cyan-400;
-}
-
-.gsap-reveal {
-  opacity: 0;
-  transform: translateY(20px);
 }
 
 /* Custom Webkit Scrollbar */

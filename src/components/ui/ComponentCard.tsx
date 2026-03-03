@@ -5,6 +5,7 @@ import { Check, Copy, Eye, Terminal, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { GridPattern } from "./GridPattern";
 
 interface ComponentCardProps {
     name: string;
@@ -67,9 +68,19 @@ export const ComponentCard: React.FC<ComponentCardProps> = ({
                 </div>
             </div>
 
-            <div className="relative min-h-[350px] flex items-center justify-center p-12 bg-background">
+            <div className="relative min-h-[350px] flex items-center justify-center p-12 bg-background overflow-hidden">
                 {/* Background Pattern */}
-                <div className="absolute inset-0 opacity-[0.05] dark:opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
+                <GridPattern
+                    width={30}
+                    height={30}
+                    x={-1}
+                    y={-1}
+                    strokeWidth={1.5}
+                    strokeDasharray="4 2"
+                    className={
+                        "absolute inset-0 h-full w-full opacity-60 dark:opacity-80 stroke-primary/40 dark:stroke-primary/40 [mask-image:radial-gradient(100%_100%_at_top_center,white,transparent)]"
+                    }
+                />
 
                 <AnimatePresence mode="wait">
                     {activeTab === "preview" ? (

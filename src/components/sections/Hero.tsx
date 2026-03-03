@@ -1,58 +1,12 @@
-"use client";
-
-import React, { useEffect, useRef } from "react";
-import { ArrowRight, Box, MousePointer2, Zap, Rocket, Laptop } from "lucide-react";
+import React from "react";
+import { ArrowRight, Box, MousePointer2, Zap, Rocket } from "lucide-react";
 import Link from "next/link";
-import gsap from "gsap";
 
 import { BackgroundBoxes } from "../ui/BackgroundBoxes";
 
 export const Hero = () => {
-    const titleRef = useRef(null);
-    const subtitleRef = useRef(null);
-    const heroRef = useRef(null);
-    const gridRef = useRef(null);
-
-    useEffect(() => {
-        const ctx = gsap.context(() => {
-            const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
-
-            tl.fromTo(".hero-tag",
-                { opacity: 0, scale: 0.8, y: -20 },
-                { opacity: 1, scale: 1, y: 0, duration: 1 }
-            )
-                .fromTo(titleRef.current,
-                    { opacity: 0, y: 100, rotateX: -30 },
-                    { opacity: 1, y: 0, rotateX: 0, duration: 1.2 },
-                    "-=0.7"
-                )
-                .fromTo(subtitleRef.current,
-                    { opacity: 0, y: 40 },
-                    { opacity: 1, y: 0, duration: 1 },
-                    "-=0.8"
-                )
-                .fromTo(".hero-cta",
-                    { opacity: 0, scale: 0.9 },
-                    { opacity: 1, scale: 1, duration: 0.5, stagger: 0.1 },
-                    "-=0.5"
-                )
-                .fromTo(".feature-card",
-                    { opacity: 0, y: 60, skewY: 5 },
-                    { opacity: 1, y: 0, skewY: 0, stagger: 0.15, duration: 1 },
-                    "-=0.4"
-                )
-                .fromTo(".mockup-hero",
-                    { opacity: 0, scale: 0.95, y: 100 },
-                    { opacity: 1, scale: 1, y: 0, duration: 1.5, ease: "expo.out" },
-                    "-=1"
-                );
-        }, heroRef);
-
-        return () => ctx.revert();
-    }, []);
-
     return (
-        <section ref={heroRef} className="relative pt-32 pb-32 overflow-hidden">
+        <section className="relative pt-32 pb-32 overflow-hidden">
             {/* Background Interactive Effect */}
             <div className="absolute inset-0 w-full h-full bg-background z-0 pointer-events-none" />
 
@@ -66,7 +20,6 @@ export const Hero = () => {
                 </div>
 
                 <h1
-                    ref={titleRef}
                     className="text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]"
                 >
                     <span className="text-foreground">Copy. Paste.</span> <br />
@@ -74,7 +27,6 @@ export const Hero = () => {
                 </h1>
 
                 <p
-                    ref={subtitleRef}
                     className="text-xl md:text-2xl text-neutral-500 max-w-3xl mx-auto mb-12 font-medium leading-relaxed"
                 >
                     A premium collection of high-performance Tailwind components
@@ -153,7 +105,6 @@ export const Hero = () => {
 
                 {/* Feature grid */}
                 <div
-                    ref={gridRef}
                     className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto"
                 >
                     {[
