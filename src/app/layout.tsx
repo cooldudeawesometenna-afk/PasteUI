@@ -66,11 +66,11 @@ export default function RootLayout({
       <Head>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-4ZNS16M5PE"
-          strategy="afterInteractive"
+          strategy="beforeInteractive"
         />
         <Script
           id="gtag-init"
-          strategy="afterInteractive"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-4ZNS16M5PE');`,
           }}
