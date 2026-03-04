@@ -1,8 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = 'https://paste-ui-one.vercel.app'; // Update to your new domain later
-
+    const baseUrl = "https://pasteui.online"; 
     return [
         {
             url: baseUrl,

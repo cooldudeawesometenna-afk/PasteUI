@@ -68,10 +68,11 @@ export const Navbar = () => {
                 </div>
 
                 {/* Mobile Toggle */}
-                <div className="md:hidden flex items-center gap-4">
+                <div className="md:hidden flex items-center gap-3">
                     <button onClick={() => setIsSearchOpen(true)} className="text-neutral-500">
                         <span className="opacity-50 text-xs">Search...</span>
                     </button>
+                    <ThemeToggle />
                     <button className="p-2" onClick={() => setIsOpen(!isOpen)}>
                         {isOpen ? <X /> : <Menu />}
                     </button>
@@ -101,7 +102,7 @@ export const Navbar = () => {
                             <div className="flex items-center gap-4 pt-4 border-t border-black/10 dark:border-white/5">
                                 <Link
                                     href="/components"
-                                    className="w-full text-center px-4 py-3 bg-foreground text-background text-sm font-medium rounded-xl"
+                                    className="flex-1 text-center px-4 py-3 bg-foreground text-background text-sm font-medium rounded-xl"
                                 >
                                     Browse Components
                                 </Link>
