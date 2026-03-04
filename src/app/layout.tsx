@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://paste-ui-one.vercel.app/", // Replace with domain
+    url: "https://pasteui.online/", 
     siteName: "PasteUI",
     title: "PasteUI | Free Premium Tailwind CSS Components",
     description: "Launch your next project in record time with our collection of interactive, hand-crafted Tailwind components.",
