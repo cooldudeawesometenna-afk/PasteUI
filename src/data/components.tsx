@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Sparkles, Zap, ShoppingBag, ArrowRight, Star, MousePointer2, Box, Rocket, Copy, Github, Menu, X, Search, Moon, Sun, Heart, Terminal, TrendingUp, BarChart3, PieChart, Activity } from "lucide-react";
+import { Sparkles, Zap, ShoppingBag, ArrowRight, Star, MousePointer2, Box, Rocket, Copy, Github, Menu, X, Search, Moon, Sun, Heart, Terminal, TrendingUp, BarChart3, PieChart, Activity, Plus } from "lucide-react";
 
 export interface UIComponent {
     id: string;
     name: string;
     description: string;
-    category: "Buttons" | "Inputs" | "Cards" | "Navigation" | "Headers" | "Dashboards" | "Footers" | "Badges" | "Typography" | "Feedback" | "Landing Pages" | "FAQ";
+    category: "Buttons" | "Inputs" | "Charts" | "Cards" | "Navigation" | "Headers" | "Dashboards" | "Footers" | "Badges" | "Typography" | "Feedback" | "Landing Pages" | "FAQ";
     code: string;
     preview: React.ReactNode;
 }
@@ -645,6 +645,58 @@ const StackedColumnPreview = () => {
         </div>
     );
 }
+
+const MetricComparisonPreview = () => {
+    const [val, setVal] = useState(64);
+    return (
+        <div onClick={() => setVal(Math.floor(Math.random() * 40) + 40)} className="w-full max-w-[260px] p-6 bg-white dark:bg-zinc-900 border border-black/10 rounded-[2.5rem] shadow-xl space-y-4 cursor-pointer group">
+            <div className="flex justify-between items-center">
+                <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400">Yield %</span>
+                <div className="flex items-center gap-1 text-emerald-500 text-[10px] font-black">
+                    <TrendingUp className="w-3 h-3" /> +12%
+                </div>
+            </div>
+            <div className="flex items-end gap-1 h-12">
+                <div className="flex-1 bg-primary/20 rounded-xl relative overflow-hidden h-full">
+                    <div className="absolute inset-0 bg-primary opacity-20 group-hover:opacity-40 transition-opacity" />
+                    <div className="absolute bottom-0 w-full bg-primary rounded-t-lg transition-all duration-700" style={{ height: `${val}%` }} />
+                </div>
+                <div className="flex-1 bg-secondary/20 rounded-xl relative overflow-hidden h-full">
+                    <div className="absolute inset-0 bg-secondary opacity-20 group-hover:opacity-40 transition-opacity" />
+                    <div className="absolute bottom-0 w-full bg-secondary rounded-t-lg transition-all duration-700" style={{ height: `${val - 15}%` }} />
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const ScatterPlotPreview = () => {
+    const [points, setPoints] = useState([
+        { x: 20, y: 70, s: 12 }, { x: 40, y: 30, s: 8 },
+        { x: 60, y: 80, s: 15 }, { x: 80, y: 40, s: 10 },
+        { x: 50, y: 55, s: 10 }
+    ]);
+    const shuffle = () => setPoints(points.map(p => ({ ...p, x: Math.random() * 80 + 10, y: Math.random() * 80 + 10 })));
+
+    return (
+        <div onClick={shuffle} className="w-full max-w-[260px] p-6 bg-white dark:bg-zinc-900 border border-black/10 rounded-[2.5rem] shadow-xl aspect-video cursor-pointer group relative overflow-hidden">
+            <div className="absolute inset-0 bg-grid-black/[0.02] dark:bg-grid-white/[0.02]" />
+            {points.map((p, i) => (
+                <div
+                    key={i}
+                    className="absolute bg-primary rounded-full transition-all duration-1000 group-hover:bg-secondary drop-shadow-[0_0_8px_rgba(124,58,237,0.3)]"
+                    style={{
+                        left: `${p.x}%`,
+                        bottom: `${p.y}%`,
+                        width: `${p.s}px`,
+                        height: `${p.s}px`
+                    }}
+                />
+            ))}
+        </div>
+    );
+};
+
 
 const PremiumSkeletonPreview = () => (
     <div className="w-full max-w-[300px] p-6 bg-white dark:bg-zinc-900 border border-black/10 rounded-[2.5rem] shadow-xl space-y-4">
@@ -2351,7 +2403,7 @@ return (
         id: "premium-radial-chart",
         name: "Interactive Radial Chart",
         description: "A smooth, SVG-driven circular progress chart for metrics.",
-        category: "Dashboards",
+        category: "Charts",
         code: `const [val, setVal] = useState(75);
 
 return (
@@ -2378,7 +2430,7 @@ return (
         id: "premium-area-line-chart",
         name: "Revenue Area Chart",
         description: "A high-fidelity bar/line chart with hover interactions.",
-        category: "Dashboards",
+        category: "Charts",
         code: `const [data, setData] = useState([30, 45, 60, 35, 80, 50, 95, 70, 85, 60, 40, 90]);
 const shuffle = () => setData(data.map(() => Math.floor(Math.random() * 80) + 10));
 
@@ -2412,7 +2464,7 @@ return (
         id: "premium-donut-pie-chart",
         name: "Distribution Pie Chart",
         description: "A modern donut chart for categorical data overview.",
-        category: "Dashboards",
+        category: "Charts",
         code: `const [segments, setSegments] = useState([125, 376, 452]);
 const shuffle = () => setSegments(segments.map(() => Math.floor(Math.random() * 300)));
 
@@ -2444,7 +2496,7 @@ return (
         id: "premium-polyline-chart",
         name: "Interactive Polyline Chart",
         description: "A smooth SVG polyline chart with multiple data layers and gradients.",
-        category: "Dashboards",
+        category: "Charts",
         code: `const [path, setPath] = useState("M0,180 Q100,20 200,140 T400,20 T600,160 T800,40 T1000,100");
 const paths = [
   "M0,180 Q100,20 200,140 T400,20 T600,160 T800,40 T1000,100",
@@ -2467,7 +2519,7 @@ return (
         id: "premium-activity-rings",
         name: "Activity Health Rings",
         description: "Multi-layered circular charts inspired by health tracking interfaces.",
-        category: "Dashboards",
+        category: "Charts",
         code: `const [rings, setRings] = useState([120, 150, 80]);
 const shuffle = () => setRings(rings.map(() => Math.floor(Math.random() * 400)));
 
@@ -2498,7 +2550,7 @@ return (
         id: "premium-stacked-revenue",
         name: "Stacked Revenue Columns",
         description: "Elegant stacked bar charts for comparing multiple data streams.",
-        category: "Dashboards",
+        category: "Charts",
         code: `const [data, setData] = useState([{s:40, v:35}, {s:55, v:25}, {s:30, v:50}, {s:65, v:20}]);
 const shuffle = () => setData(data.map(() => ({ s: Math.floor(Math.random() * 50) + 10, v: Math.floor(Math.random() * 40) + 10 })));
 
@@ -2557,6 +2609,73 @@ return (
   <div className="w-4 h-4 bg-purple-500 rounded-full animate-bounce shadow-lg shadow-purple-500/20" />
 </div>`,
         preview: <DynamicDotsPreview />
+    },
+    {
+        id: "premium-yield-comparison",
+        name: "Yield Comparison Chart",
+        description: "Interactive dual-bar comparison with smooth height transitions.",
+        category: "Charts",
+        code: `const [val, setVal] = useState(64);
+
+return (
+  <div onClick={() => setVal(Math.floor(Math.random() * 40) + 40)} className="w-full max-w-lg p-12 bg-white dark:bg-zinc-900 border border-black/10 rounded-[3rem] shadow-2xl space-y-8 cursor-pointer group">
+    <div className="flex justify-between items-center">
+       <span className="text-sm font-black uppercase tracking-[0.2em] text-neutral-400">Yield % Analytics</span>
+       <div className="flex items-center gap-2 text-emerald-500 font-black">
+          <TrendingUp className="w-5 h-5" /> +12% performance
+       </div>
+    </div>
+    <div className="flex items-end gap-4 h-48">
+       <div className="flex-1 bg-primary/10 rounded-[2rem] relative overflow-hidden h-full">
+          <div className="absolute inset-0 bg-primary opacity-5 group-hover:opacity-10 transition-opacity" />
+          <div className="absolute bottom-0 w-full bg-primary rounded-t-[1.5rem] transition-all duration-1000 shadow-[0_0_30px_rgba(124,58,237,0.3)]" style={{ height: \`\${val}%\` }} />
+       </div>
+       <div className="flex-1 bg-secondary/10 rounded-[2rem] relative overflow-hidden h-full">
+          <div className="absolute inset-0 bg-secondary opacity-5 group-hover:opacity-10 transition-opacity" />
+          <div className="absolute bottom-0 w-full bg-secondary rounded-t-[1.5rem] transition-all duration-1000 shadow-[0_0_30px_rgba(236,72,153,0.3)]" style={{ height: \`\${val - 15}%\` }} />
+       </div>
+    </div>
+    <p className="text-center text-xs font-bold text-neutral-500 italic">Click the chart to re-simulate data stream</p>
+  </div>
+);`,
+        preview: <MetricComparisonPreview />
+    },
+    {
+        id: "premium-scatter-plot",
+        name: "Behavioral Scatter Plot",
+        description: "A dynamic coordinate-based chart for plotting user behavior or distributions.",
+        category: "Charts",
+        code: `const [points, setPoints] = useState([
+  { x: 20, y: 70, s: 12 }, { x: 40, y: 30, s: 8 }, 
+  { x: 60, y: 80, s: 15 }, { x: 80, y: 40, s: 10 },
+  { x: 50, y: 55, s: 10 }
+]);
+const shuffle = () => setPoints(points.map(p => ({ ...p, x: Math.random() * 80 + 10, y: Math.random() * 80 + 10 })));
+
+return (
+  <div onClick={shuffle} className="w-full max-w-2xl p-12 bg-white dark:bg-zinc-900 border border-black/10 rounded-[3rem] shadow-2xl aspect-video cursor-pointer group relative overflow-hidden">
+    <div className="absolute inset-0 bg-grid-black/[0.05] dark:bg-grid-white/[0.05]" />
+    <div className="relative z-10 mb-8 border-b border-black/5 pb-4">
+       <h3 className="text-2xl font-black">User Distribution</h3>
+       <p className="text-xs font-bold text-neutral-500 uppercase tracking-widest">Interactive Plot Point Mapping</p>
+    </div>
+    {points.map((p, i) => (
+      <div 
+        key={i} 
+        className="absolute bg-primary rounded-full transition-all duration-1000 group-hover:bg-secondary drop-shadow-[0_0_15px_rgba(124,58,237,0.4)]"
+        style={{ 
+          left: \`\${p.x}%\`, 
+          bottom: \`\${p.y}%\`, 
+          width: \`\${p.s * 2}px\`, 
+          height: \`\${p.s * 2}px\` 
+        }} 
+      >
+        <div className="absolute inset-0 bg-white/20 rounded-full animate-ping opacity-20" />
+      </div>
+    ))}
+  </div>
+);`,
+        preview: <ScatterPlotPreview />
     }
 ];
 

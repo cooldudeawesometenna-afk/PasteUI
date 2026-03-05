@@ -15,7 +15,8 @@ import {
     Layout,
     MessageCircle,
     Layers,
-    Monitor
+    Monitor,
+    BarChart3
 } from "lucide-react";
 
 interface SidebarGroup {
@@ -46,6 +47,7 @@ const sidebarConfig: SidebarGroup[] = [
             { title: "Cards", href: "/components?category=Cards", icon: <Box className="w-4 h-4" /> },
             { title: "Navigation", href: "/components?category=Navigation", icon: <Layout className="w-4 h-4" /> },
             { title: "Dashboard Designs", href: "/components?category=Dashboards", icon: <Monitor className="w-4 h-4" /> },
+            { title: "Charts & Visuals", href: "/components?category=Charts", icon: <BarChart3 className="w-4 h-4" />, label: "New" },
             { title: "Landing Pages", href: "/components?category=Landing Pages", icon: <Layout className="w-4 h-4" /> },
             { title: "Header Designs", href: "/components?category=Headers", icon: <Layout className="w-4 h-4" /> },
             { title: "FAQ Sections", href: "/components?category=FAQ", icon: <MessageCircle className="w-4 h-4" /> },

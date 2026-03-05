@@ -8,7 +8,7 @@ import { ComponentCard } from "@/components/ui/ComponentCard";
 import gsap from "gsap";
 import { useSearchParams } from "next/navigation";
 
-const categories = ["All", "Buttons", "Inputs", "Cards", "Navigation", "Headers", "Dashboards", "Landing Pages", "Footers", "FAQ", "Badges", "Feedback", "Typography"];
+const categories = ["All", "Buttons", "Inputs", "Charts", "Cards", "Navigation", "Headers", "Dashboards", "Landing Pages", "Footers", "FAQ", "Badges", "Feedback", "Typography"];
 
 function ComponentsContent() {
     const searchParams = useSearchParams();
