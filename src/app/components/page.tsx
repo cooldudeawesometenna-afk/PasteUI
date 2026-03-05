@@ -86,6 +86,7 @@ function ComponentsContent() {
                                 code={comp.code}
                                 preview={comp.preview}
                                 category={comp.category}
+                                hasSidebar={true}
                             />
                         </div>
                     ))}
@@ -96,16 +97,80 @@ function ComponentsContent() {
 }
 
 
+const LoadingScreen = () => {
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background">
+            <div className="flex flex-col items-center gap-8">
+                <div className="relative flex flex-col items-center gap-6">
+                    {/* Glowing background effect */}
+                    <div className="absolute inset-x-0 inset-y-0 bg-primary/20 blur-[50px] rounded-full animate-pulse" />
+
+                    {/* Logo Section */}
+                    <div className="relative p-6 bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 rounded-[2.5rem] shadow-2xl flex flex-col items-center gap-4 animate-in zoom-in duration-700">
+                        <div className="p-3 bg-primary/10 dark:bg-white/5 rounded-2xl border border-primary/20">
+                            <img src="/favicon.png" alt="PasteUI Logo" className="w-12 h-12 object-contain" />
+                        </div>
+                        <div className="flex flex-col items-center">
+                            <h2 className="text-3xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-br from-primary to-purple-400">
+                                PasteUI
+                            </h2>
+                            <div className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-500 mt-1">
+                                Premium Components
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Loading Indicator */}
+                <div className="flex flex-col items-center gap-3">
+                    <div className="relative w-48 h-1 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-primary w-1/2 rounded-full animate-loading-progress" />
+                    </div>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400 animate-pulse">
+                        Library Loading...
+                    </span>
+                </div>
+            </div>
+
+            {/* Custom Animation Keyframes Injection */}
+            <style jsx global>{`
+                @keyframes loading-progress {
+                    0% { transform: translateX(-100%); width: 20%; }
+                    50% { transform: translateX(100%); width: 80%; }
+                    100% { transform: translateX(300%); width: 20%; }
+                }
+                .animate-loading-progress {
+                    animation: loading-progress 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+                }
+            `}</style>
+        </div>
+    );
+}
+
 export default function ComponentsPage() {
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        // Force a minimum loading time to show off the beautiful animation
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 1500);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    if (isLoading) {
+        return <LoadingScreen />;
+    }
+
     return (
         <main className="min-h-screen bg-background pt-24 pb-20">
             <Navbar />
             <div className="container mx-auto px-4">
-                <Suspense fallback={<div className="text-foreground">Loading...</div>}>
+                <Suspense fallback={<LoadingScreen />}>
                     <ComponentsContent />
                 </Suspense>
             </div>
         </main>
     );
 }
-

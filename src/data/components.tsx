@@ -74,16 +74,39 @@ const StarsPreview = () => {
 }
 
 const OTPPreview = () => {
+    const [otp, setOtp] = React.useState(["", "", "", "", "", ""]);
+    const inputRefs = React.useRef<(HTMLInputElement | null)[]>([]);
+
+    const handleChange = (index: number, value: string) => {
+        if (isNaN(Number(value))) return;
+        const newOtp = [...otp];
+        newOtp[index] = value.substring(value.length - 1);
+        setOtp(newOtp);
+
+        // Move to next input if value is entered
+        if (value && index < 5) {
+            inputRefs.current[index + 1]?.focus();
+        }
+    };
+
+    const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Backspace" && !otp[index] && index > 0) {
+            inputRefs.current[index - 1]?.focus();
+        }
+    };
+
     return (
         <div className="flex gap-2 focus-within:scale-105 transition-transform">
-            {[1, 2, 3, 4].map(i => (
+            {otp.map((digit, i) => (
                 <input
                     key={i}
+                    ref={(el) => { inputRefs.current[i] = el; }}
                     type="text"
                     maxLength={1}
+                    value={digit}
+                    onChange={(e) => handleChange(i, e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(i, e)}
                     className="w-8 h-10 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl text-center font-black text-sm text-primary focus:border-primary focus:outline-none transition-all"
-                    defaultValue={i === 1 ? "1" : ""}
-                    autoFocus={i === 1}
                 />
             ))}
         </div>
@@ -199,20 +222,6 @@ const MarqueePreview = () => {
     );
 }
 
-const SkeletonPreview = () => {
-    return (
-        <div className="w-full max-w-[240px] space-y-3">
-            <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-black/5 dark:bg-white/5 animate-pulse" />
-                <div className="flex-1 space-y-2">
-                    <div className="h-2 w-3/4 bg-black/10 dark:bg-white/10 rounded animate-pulse" />
-                    <div className="h-2 w-1/2 bg-black/10 dark:bg-white/10 rounded animate-pulse" />
-                </div>
-            </div>
-            <div className="h-24 w-full bg-black/5 dark:bg-white/5 rounded-2xl animate-pulse" />
-        </div>
-    );
-}
 
 const PricingTogglePreview = () => {
     const [isYearly, setIsYearly] = React.useState(false);
@@ -636,6 +645,38 @@ const StackedColumnPreview = () => {
         </div>
     );
 }
+
+const PremiumSkeletonPreview = () => (
+    <div className="w-full max-w-[300px] p-6 bg-white dark:bg-zinc-900 border border-black/10 rounded-[2.5rem] shadow-xl space-y-4">
+        <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-neutral-100 dark:bg-white/5 animate-pulse" />
+            <div className="space-y-2 flex-1">
+                <div className="h-3 w-2/3 bg-neutral-100 dark:bg-white/5 rounded-full animate-pulse" />
+                <div className="h-2 w-1/2 bg-neutral-100 dark:bg-white/5 rounded-full animate-pulse" />
+            </div>
+        </div>
+        <div className="h-32 w-full bg-neutral-100 dark:bg-white/5 rounded-3xl animate-pulse" />
+    </div>
+);
+
+const EliteSpinnerPreview = () => (
+    <div className="flex items-center justify-center p-12 bg-white dark:bg-zinc-900 border border-black/10 rounded-[3rem] shadow-xl w-full max-w-[200px]">
+        <div className="relative w-16 h-16">
+            <div className="absolute inset-0 rounded-full border-4 border-primary/10" />
+            <div className="absolute inset-0 rounded-full border-4 border-t-primary border-r-transparent border-b-transparent border-l-transparent animate-spin" />
+            <div className="absolute inset-2 rounded-full border-4 border-secondary/10" />
+            <div className="absolute inset-2 rounded-full border-4 border-t-secondary border-r-transparent border-b-transparent border-l-transparent animate-spin duration-700" />
+        </div>
+    </div>
+);
+
+const DynamicDotsPreview = () => (
+    <div className="flex gap-2 p-8 bg-white dark:bg-zinc-900 border border-black/10 rounded-[2.5rem] shadow-xl">
+        <div className="w-3 h-3 bg-primary rounded-full animate-bounce [animation-delay:-0.3s]" />
+        <div className="w-3 h-3 bg-secondary rounded-full animate-bounce [animation-delay:-0.15s]" />
+        <div className="w-3 h-3 bg-purple-500 rounded-full animate-bounce" />
+    </div>
+);
 
 export const componentsData: UIComponent[] = [
     // --- BUTTONS ---
@@ -1429,32 +1470,47 @@ export const componentsData: UIComponent[] = [
 </div>`,
         preview: <StarsPreview />
     },
-    {
-        id: "premium-skeleton",
-        name: "Premium Skeleton",
-        description: "Sophisticated placeholder loaders for smooth state transitions.",
-        category: "Feedback",
-        code: `<div className="space-y-4 animate-pulse">
-  <div className="flex items-center gap-4">
-    <div className="w-12 h-12 bg-black/5 rounded-full" />
-    <div className="flex-1 space-y-2">
-      <div className="h-3 w-1/4 bg-black/5 rounded" />
-      <div className="h-3 w-3/4 bg-black/5 rounded" />
-    </div>
-  </div>
-</div>`,
-        preview: <SkeletonPreview />
-    },
+
     {
         id: "otp-input",
         name: "Security OTP",
         description: "Modern 6-digit verification code input fields.",
         category: "Inputs",
-        code: `<div className="flex gap-4 justify-center">
-  {[1, 2, 3, 4, 5, 6].map(i => (
-    <input key={i} type="text" maxLength={1} className="w-12 h-16 bg-black/5 dark:bg-white/5 border-2 border-black/10 dark:border-white/10 rounded-2xl text-center text-2xl font-black focus:border-primary focus:outline-none transition-all" />
-  ))}
-</div>`,
+        code: `const OTPInput = () => {
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  const handleChange = (index, value) => {
+    if (isNaN(value)) return;
+    const newOtp = [...otp];
+    newOtp[index] = value.substring(value.length - 1);
+    setOtp(newOtp);
+    if (value && index < 5) inputRefs.current[index + 1]?.focus();
+  };
+
+  const handleKeyDown = (index, e) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
+      inputRefs.current[index - 1]?.focus();
+    }
+  };
+
+  return (
+    <div className="flex gap-4 justify-center">
+      {otp.map((digit, i) => (
+        <input
+          key={i}
+          ref={(el) => (inputRefs.current[i] = el)}
+          type="text"
+          maxLength={1}
+          value={digit}
+          onChange={(e) => handleChange(i, e.target.value)}
+          onKeyDown={(e) => handleKeyDown(i, e)}
+          className="w-12 h-16 bg-black/5 dark:bg-white/5 border-2 border-black/10 dark:border-white/10 rounded-2xl text-center text-2xl font-black focus:border-primary focus:outline-none transition-all"
+        />
+      ))}
+    </div>
+  );
+};`,
         preview: <OTPPreview />
     },
     {
@@ -2459,6 +2515,48 @@ return (
   </div>
 );`,
         preview: <StackedColumnPreview />
+    },
+    {
+        id: "premium-skeleton",
+        name: "Premium Skeleton Loader",
+        description: "A pulsing skeleton screen for content placeholders.",
+        category: "Feedback",
+        code: `<div className="w-full max-w-sm space-y-4 p-8 bg-white dark:bg-zinc-900 border border-black/5 rounded-[2.5rem]">
+  <div className="flex items-center gap-4">
+    <div className="w-14 h-14 rounded-2xl bg-neutral-100 dark:bg-white/5 animate-pulse" />
+    <div className="space-y-3 flex-1">
+      <div className="h-3 w-3/4 bg-neutral-100 dark:bg-white/5 rounded-full animate-pulse" />
+      <div className="h-3 w-1/2 bg-neutral-100 dark:bg-white/5 rounded-full animate-pulse" />
+    </div>
+  </div>
+  <div className="h-48 w-full bg-neutral-100 dark:bg-white/5 rounded-[2rem] animate-pulse" />
+</div>`,
+        preview: <PremiumSkeletonPreview />
+    },
+    {
+        id: "elite-gradient-spinner",
+        name: "Elite Gradient Spinner",
+        description: "A dual-ring spinning loader with primary and secondary accents.",
+        category: "Feedback",
+        code: `<div className="relative w-16 h-16">
+  <div className="absolute inset-0 rounded-full border-4 border-primary/10" />
+  <div className="absolute inset-0 rounded-full border-4 border-t-primary border-r-transparent border-b-transparent border-l-transparent animate-spin" />
+  <div className="absolute inset-2 rounded-full border-4 border-secondary/10" />
+  <div className="absolute inset-2 rounded-full border-4 border-t-secondary border-r-transparent border-b-transparent border-l-transparent animate-spin duration-700" />
+</div>`,
+        preview: <EliteSpinnerPreview />
+    },
+    {
+        id: "dynamic-bouncing-dots",
+        name: "Dynamic Bouncing Dots",
+        description: "A playful bouncing animation for asynchronous loading states.",
+        category: "Feedback",
+        code: `<div className="flex gap-3">
+  <div className="w-4 h-4 bg-primary rounded-full animate-bounce [animation-delay:-0.3s] shadow-lg shadow-primary/20" />
+  <div className="w-4 h-4 bg-secondary rounded-full animate-bounce [animation-delay:-0.15s] shadow-lg shadow-secondary/20" />
+  <div className="w-4 h-4 bg-purple-500 rounded-full animate-bounce shadow-lg shadow-purple-500/20" />
+</div>`,
+        preview: <DynamicDotsPreview />
     }
 ];
 
