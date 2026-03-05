@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { Sparkles, Zap, ShoppingBag, ArrowRight, Star, MousePointer2, Box, Rocket, Copy, Github, Menu, X, Search, Moon, Sun, Heart, Terminal, TrendingUp, BarChart3, PieChart, Activity } from "lucide-react";
 
 export interface UIComponent {
     id: string;
@@ -294,6 +295,344 @@ const InputPreview = ({ placeholder }: { placeholder: string }) => {
                 placeholder={placeholder}
                 className="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl px-4 py-2 text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium"
             />
+        </div>
+    );
+}
+
+const CommandMenuPreview = () => {
+    const [query, setQuery] = React.useState("");
+    const items = [
+        { icon: <Zap className="w-4 h-4" />, name: "Quick Action", desc: "Trigger internal event", type: "Command" },
+        { icon: <Terminal className="w-4 h-4" />, name: "Run Script", desc: "Build & Deploy", type: "Utility" },
+        { icon: <Search className="w-4 h-4" />, name: "Find Files", desc: "Search across project", type: "Nav" }
+    ];
+
+    const filtered = items.filter(i => i.name.toLowerCase().includes(query.toLowerCase()));
+
+    return (
+        <div className="w-full max-w-[280px] bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 rounded-2xl shadow-2xl p-2 space-y-1">
+            <div className="flex items-center gap-2 p-2 px-3 bg-black/5 dark:bg-white/5 rounded-xl border border-black/5 dark:border-white/5 focus-within:ring-2 ring-primary/20 transition-all">
+                <Search className="w-4 h-4 text-neutral-400" />
+                <input
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    className="bg-transparent border-none outline-none text-[10px] text-foreground font-bold w-full placeholder:text-neutral-400"
+                    placeholder="Type to search..."
+                />
+                <span className="ml-auto text-[8px] bg-black/5 dark:bg-white/5 px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-neutral-500">⌘K</span>
+            </div>
+            <div className="pt-2">
+                <div className="text-[8px] font-black tracking-widest uppercase text-neutral-400 px-3 pb-2">
+                    {query ? 'Results' : 'Recent'}
+                </div>
+                {filtered.length > 0 ? filtered.map((item, idx) => (
+                    <div key={idx} className={`flex items-center gap-3 p-2 px-3 rounded-xl cursor-pointer transition-all ${idx === 0 ? 'bg-primary/10 text-primary' : 'hover:bg-black/5 dark:hover:bg-white/5 text-neutral-500'}`}>
+                        {item.icon}
+                        <div className="flex-1">
+                            <div className="text-[10px] font-black">{item.name}</div>
+                            <div className="text-[8px] opacity-60 font-medium">{item.desc}</div>
+                        </div>
+                        <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100" />
+                    </div>
+                )) : (
+                    <div className="p-4 text-center text-[10px] text-neutral-400 font-bold italic">No matches found</div>
+                )}
+            </div>
+        </div>
+    );
+}
+
+const GlassProgressPreview = () => {
+    const [progress, setProgress] = React.useState(68);
+    const [isSyncing, setIsSyncing] = React.useState(false);
+
+    const handleSimulate = () => {
+        setIsSyncing(true);
+        setProgress(0);
+        let curr = 0;
+        const interval = setInterval(() => {
+            curr += Math.floor(Math.random() * 15);
+            if (curr >= 100) {
+                setProgress(100);
+                setIsSyncing(false);
+                clearInterval(interval);
+            } else {
+                setProgress(curr);
+            }
+        }, 400);
+    };
+
+    return (
+        <div className="w-full max-w-[240px] space-y-4">
+            <div className="flex justify-between items-end">
+                <div className="flex flex-col">
+                    <span className="text-[8px] font-black uppercase tracking-widest text-neutral-400">Status</span>
+                    <span className="text-[10px] font-bold text-foreground transition-all">{isSyncing ? 'Synchronizing...' : 'Upload Complete'}</span>
+                </div>
+                <span className="text-xl font-black text-primary transition-all">{progress}%</span>
+            </div>
+            <div
+                onClick={handleSimulate}
+                className="h-4 w-full bg-black/5 dark:bg-white/5 rounded-full border border-black/5 dark:border-white/5 p-0.5 overflow-hidden backdrop-blur-sm cursor-pointer hover:border-primary/30 transition-all"
+            >
+                <div
+                    style={{ width: `${progress}%` }}
+                    className="h-full bg-gradient-to-r from-primary to-purple-500 rounded-full shadow-[0_0_15px_rgba(124,58,237,0.4)] relative overflow-hidden transition-all duration-500"
+                >
+                    <div className="absolute inset-0 bg-white/20 animate-pulse" />
+                </div>
+            </div>
+            <button onClick={handleSimulate} className="w-full py-1 text-[8px] font-black uppercase tracking-widest bg-black/5 dark:bg-white/10 rounded-lg hover:bg-primary hover:text-white transition-all">
+                Restart Simulation
+            </button>
+        </div>
+    );
+}
+
+const FloatingActionPreview = () => {
+    return (
+        <div className="relative h-24 w-full flex items-center justify-center">
+            <div className="p-3 bg-primary text-white rounded-2xl shadow-2xl flex items-center gap-4 hover:scale-105 active:scale-95 transition-all cursor-pointer">
+                <div className="flex items-center gap-2 border-r border-white/20 pr-4">
+                    <Sparkles className="w-5 h-5 transition-transform group-hover:rotate-12" />
+                    <span className="text-xs font-black">AI Assistant</span>
+                </div>
+                <ArrowRight className="w-5 h-5" />
+            </div>
+        </div>
+    );
+}
+
+const ModernTabsPreview = () => {
+    const [active, setActive] = React.useState('Account');
+    return (
+        <div className="flex bg-black/5 dark:bg-white/5 p-1 rounded-[1.5rem] border border-black/5 dark:border-white/5 relative">
+            {['Account', 'Security', 'Billing'].map(tab => (
+                <button
+                    key={tab}
+                    onClick={() => setActive(tab)}
+                    className={`relative px-6 py-2 text-[10px] font-black rounded-[1.25rem] transition-all duration-300 ${active === tab ? 'text-primary' : 'text-neutral-500 hover:text-neutral-700'}`}
+                >
+                    {active === tab && (
+                        <div className="absolute inset-0 bg-background dark:bg-zinc-800 shadow-lg rounded-[1.25rem] z-0" />
+                    )}
+                    <span className="relative z-10">{tab}</span>
+                </button>
+            ))}
+        </div>
+    );
+}
+
+const SlickAccordionPreview = () => {
+    const [open, setOpen] = React.useState(1);
+    return (
+        <div className="w-full max-w-[280px] space-y-2">
+            {[1, 2].map(i => (
+                <div key={i} className={`group overflow-hidden rounded-[2rem] border transition-all duration-500 ${open === i ? 'bg-background border-primary shadow-xl scale-[1.02]' : 'bg-black/[0.02] dark:bg-white/[0.01] border-black/10 dark:border-white/10'}`}>
+                    <div className="flex items-center justify-between p-6 cursor-pointer" onClick={() => setOpen(i === open ? 0 : i)}>
+                        <span className="text-[11px] font-black uppercase tracking-widest">Question #{i}</span>
+                        <div className={`h-8 w-8 rounded-full flex items-center justify-center transition-all ${open === i ? 'bg-primary text-white rotate-90' : 'bg-black/5 dark:bg-white/5'}`}>
+                            <ArrowRight className="w-4 h-4" />
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+}
+
+const ModernAlertPreview = () => {
+    const [visible, setVisible] = React.useState(true);
+
+    if (!visible) return (
+        <button onClick={() => setVisible(true)} className="px-4 py-2 bg-primary/10 text-primary text-[10px] font-black rounded-xl border border-primary/20 hover:bg-primary/20 transition-all">
+            Show Alert Again
+        </button>
+    );
+
+    return (
+        <div className="w-full max-w-[320px] p-6 bg-primary/10 border border-primary/20 rounded-[2rem] flex gap-4 relative overflow-hidden group animate-in fade-in slide-in-from-top-4 duration-500">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-[40px] -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-1000" />
+            <button
+                onClick={() => setVisible(false)}
+                className="absolute top-4 right-4 h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary/20 transition-all z-20"
+            >
+                <X className="w-3 h-3 text-primary" />
+            </button>
+            <div className="w-12 h-12 rounded-2xl bg-primary text-white flex items-center justify-center shrink-0 shadow-lg relative z-10">
+                <Rocket className="w-6 h-6" />
+            </div>
+            <div className="relative z-10 space-y-1">
+                <h4 className="text-[11px] font-black uppercase tracking-widest text-primary">New Feature Available</h4>
+                <p className="text-[10px] font-bold text-neutral-500 leading-tight">Version 2.0 is now live with enhanced AI performance and security.</p>
+            </div>
+        </div>
+    );
+}
+
+const RadialChartPreview = () => {
+    const [val, setVal] = useState(75);
+    return (
+        <div className="relative flex flex-col items-center justify-center p-6 bg-white dark:bg-zinc-900 border border-black/10 rounded-[3rem] shadow-xl w-full max-w-[200px] cursor-pointer group" onClick={() => setVal(v => v === 100 ? 25 : v + 25)}>
+            <svg className="w-32 h-32 transform -rotate-90">
+                <circle cx="64" cy="64" r="50" fill="transparent" stroke="currentColor" strokeWidth="8" className="text-neutral-100 dark:text-white/5" />
+                <circle
+                    cx="64" cy="64" r="50" fill="transparent" stroke="currentColor" strokeWidth="8"
+                    strokeDasharray={314.159}
+                    strokeDashoffset={314.159 - (val / 100) * 314.159}
+                    strokeLinecap="round"
+                    className="text-primary transition-all duration-1000 ease-out drop-shadow-[0_0_8px_rgba(124,58,237,0.5)]"
+                />
+            </svg>
+            <div className="absolute inset-0 flex flex-col items-center justify-center mt-6">
+                <span className="text-3xl font-black text-foreground tracking-tighter">{val}%</span>
+                <span className="text-[8px] font-black uppercase tracking-widest text-neutral-400">Memory</span>
+            </div>
+        </div>
+    );
+}
+
+const LineChartPreview = () => {
+    const [data, setData] = useState([40, 60, 45, 80, 50, 95, 70, 85]);
+    const shuffle = () => setData(data.map(() => Math.floor(Math.random() * 70) + 30));
+
+    return (
+        <div className="w-full max-w-[320px] p-6 bg-white dark:bg-zinc-900 border border-black/10 rounded-[2.5rem] shadow-xl space-y-6 cursor-pointer" onClick={shuffle}>
+            <div className="flex justify-between items-start">
+                <div>
+                    <h4 className="text-xs font-black uppercase tracking-widest text-neutral-400">Revenue Growth</h4>
+                    <p className="text-2xl font-black tracking-tighter">$14,284.00</p>
+                </div>
+                <div className="p-2 bg-emerald-500/10 text-emerald-500 rounded-xl flex items-center gap-1 text-[10px] font-black">
+                    <TrendingUp className="w-3 h-3" /> +8.2%
+                </div>
+            </div>
+            <div className="h-24 w-full flex items-end gap-1.5 px-2">
+                {data.map((h, i) => (
+                    <div key={i} className="flex-1 bg-primary/10 rounded-t-lg relative group/bar h-full">
+                        <div
+                            className="absolute bottom-0 w-full bg-primary rounded-t-lg transition-all duration-700 ease-out group-hover:bg-purple-500"
+                            style={{ height: `${h}%` }}
+                        />
+                        <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-foreground text-background text-[8px] px-1 rounded opacity-0 group-hover/bar:opacity-100 transition-opacity">
+                            {h}k
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+const PieChartPreview = () => {
+    const [offsets, setOffsets] = useState([62, 188, 220]);
+    const shuffle = () => setOffsets(offsets.map(o => Math.floor(Math.random() * 200)));
+
+    return (
+        <div onClick={shuffle} className="w-full max-w-[280px] p-6 bg-white dark:bg-zinc-900 border border-black/10 rounded-[3rem] shadow-xl flex items-center gap-6 cursor-pointer">
+            <div className="relative w-24 h-24">
+                <svg className="w-full h-full transform -rotate-90">
+                    <circle cx="48" cy="48" r="40" fill="transparent" stroke="#7c3aed" strokeWidth="16" strokeDasharray="251.32" strokeDashoffset={offsets[0]} className="transition-all duration-1000" />
+                    <circle cx="48" cy="48" r="40" fill="transparent" stroke="#3b82f6" strokeWidth="16" strokeDasharray="251.32" strokeDashoffset={offsets[1]} className="transition-all duration-1000" />
+                    <circle cx="48" cy="48" r="40" fill="transparent" stroke="#22c55e" strokeWidth="16" strokeDasharray="251.32" strokeDashoffset={offsets[2]} className="transition-all duration-1000" />
+                </svg>
+            </div>
+            <div className="space-y-2 flex-1">
+                {[
+                    { label: 'Direct', val: '65%', color: 'bg-primary' },
+                    { label: 'Social', val: '25%', color: 'bg-blue-500' },
+                    { label: 'Referral', val: '10%', color: 'bg-emerald-500' }
+                ].map(item => (
+                    <div key={item.label} className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-[10px] font-black uppercase text-neutral-400">
+                            <div className={`w-2 h-2 rounded-full ${item.color}`} /> {item.label}
+                        </div>
+                        <span className="text-[10px] font-black">{item.val}</span>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+const InteractiveLineChartPreview = () => {
+    const [path, setPath] = useState("M0,35 Q10,10 20,25 T40,5 T60,30 T80,10 T100,20");
+    const paths = [
+        "M0,35 Q10,10 20,25 T40,5 T60,30 T80,10 T100,20",
+        "M0,20 Q20,38 40,25 T60,5 T80,30 T100,10",
+        "M0,38 Q15,5 30,35 T50,20 T70,30 T100,5"
+    ];
+
+    return (
+        <div onClick={() => setPath(paths[Math.floor(Math.random() * paths.length)])} className="w-full max-w-[280px] p-6 bg-white dark:bg-zinc-900 border border-black/10 rounded-[2.5rem] shadow-xl space-y-4 cursor-pointer">
+            <div className="flex justify-between items-center">
+                <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400">Activity</span>
+                <div className="flex gap-1">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                </div>
+            </div>
+            <div className="h-20 w-full relative group">
+                <svg className="w-full h-full overflow-visible" viewBox="0 0 100 40">
+                    <path
+                        d={path}
+                        fill="none" stroke="#7c3aed" strokeWidth="2.5" strokeLinecap="round"
+                        className="drop-shadow-[0_0_8px_rgba(124,58,237,0.5)] transition-all duration-700"
+                    />
+                </svg>
+            </div>
+        </div>
+    );
+}
+
+const ActivityRingsPreview = () => {
+    const [offsets, setOffsets] = useState([50, 40]);
+    const shuffle = () => setOffsets(offsets.map(o => Math.floor(Math.random() * 150)));
+
+    return (
+        <div onClick={shuffle} className="w-full max-w-[220px] p-6 bg-white dark:bg-zinc-900 border border-black/10 rounded-[3rem] shadow-xl flex items-center justify-center gap-8 cursor-pointer group">
+            <div className="relative w-24 h-24">
+                <svg className="w-full h-full transform -rotate-90">
+                    {/* Ring 1 */}
+                    <circle cx="48" cy="48" r="40" fill="transparent" stroke="currentColor" strokeWidth="8" className="text-primary/10" />
+                    <circle cx="48" cy="48" r="40" fill="transparent" stroke="currentColor" strokeWidth="8" strokeDasharray="251" strokeDashoffset={offsets[0]} strokeLinecap="round" className="text-secondary drop-shadow-[0_0_5px_rgba(236,72,153,0.5)] transition-all duration-1000" />
+                    {/* Ring 2 */}
+                    <circle cx="48" cy="48" r="28" fill="transparent" stroke="currentColor" strokeWidth="8" className="text-blue-500/10" />
+                    <circle cx="48" cy="48" r="28" fill="transparent" stroke="currentColor" strokeWidth="8" strokeDasharray="175" strokeDashoffset={offsets[1]} strokeLinecap="round" className="text-blue-500 drop-shadow-[0_0_5px_rgba(59,130,246,0.5)] transition-all duration-1000" />
+                </svg>
+            </div>
+            <div className="space-y-1">
+                <div className="bg-secondary/20 p-1.5 rounded-lg transition-transform group-hover:scale-110"><TrendingUp className="w-3 h-3 text-secondary" /></div>
+                <div className="bg-blue-500/20 p-1.5 rounded-lg transition-transform group-hover:scale-110 delay-75"><Activity className="w-3 h-3 text-blue-500" /></div>
+            </div>
+        </div>
+    );
+}
+
+const StackedColumnPreview = () => {
+    const [data, setData] = useState([
+        { a: 40, b: 30 }, { a: 20, b: 50 }, { a: 60, b: 20 }, { a: 35, b: 45 }, { a: 50, b: 15 }
+    ]);
+    const shuffle = () => setData(data.map(() => ({ a: Math.floor(Math.random() * 50) + 10, b: Math.floor(Math.random() * 50) + 10 })));
+
+    return (
+        <div onClick={shuffle} className="w-full max-w-[280px] p-6 bg-white dark:bg-zinc-900 border border-black/10 rounded-[2.5rem] shadow-xl space-y-6 cursor-pointer group">
+            <div className="h-20 w-full flex items-end gap-3 px-2">
+                {data.map((d, i) => (
+                    <div key={i} className="flex-1 flex flex-col items-center justify-end h-full gap-1">
+                        <div className="w-full bg-blue-500 rounded-lg transition-all duration-700 hover:brightness-110" style={{ height: `${d.b}%` }} />
+                        <div className="w-full bg-primary rounded-lg transition-all duration-700 hover:brightness-110" style={{ height: `${d.a}%` }} />
+                    </div>
+                ))}
+            </div>
+            <div className="flex justify-center gap-4">
+                <div className="flex items-center gap-1.5 text-[8px] font-black uppercase text-neutral-400">
+                    <div className="w-2 h-2 rounded bg-primary" /> Sales
+                </div>
+                <div className="flex items-center gap-1.5 text-[8px] font-black uppercase text-neutral-400">
+                    <div className="w-2 h-2 rounded bg-blue-500" /> profit
+                </div>
+            </div>
         </div>
     );
 }
@@ -1464,6 +1803,662 @@ export const componentsData: UIComponent[] = [
   </div>
 </div>`,
         preview: <TrustedByPreview />
+    },
+    // --- BENTO GRID ---
+    {
+        id: "bento-grid",
+        name: "Premium Bento Grid",
+        description: "A modern, asymmetrical layout for highlighting features or portfolio items.",
+        category: "Landing Pages",
+        code: `<div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-[600px]">
+  <div className="md:col-span-2 md:row-span-2 bg-zinc-100 dark:bg-white/5 rounded-[2rem] border border-black/5 dark:border-white/10 p-8 flex flex-col justify-between overflow-hidden relative group">
+    <img src="/images/glass-shapes.png" className="absolute top-0 right-0 w-full h-full object-cover opacity-20 group-hover:scale-110 transition-transform duration-700" alt="" />
+    <div className="relative z-10">
+      <h3 className="text-3xl font-black mb-4">The Next Evolution</h3>
+      <p className="text-neutral-500 max-w-xs font-medium">Pushing the boundaries of what's possible with modern web technologies.</p>
+    </div>
+    <button className="relative z-10 w-fit px-6 py-3 bg-foreground text-background rounded-full font-bold text-sm">Explore More</button>
+  </div>
+  <div className="md:col-span-2 bg-gradient-to-br from-primary to-purple-600 rounded-[2rem] p-8 text-white flex flex-col justify-center">
+    <h3 className="text-4xl font-black mb-2 tracking-tighter">Fast. Secure.</h3>
+    <p className="opacity-80 font-medium italic">"The quickest way to ship your next big idea."</p>
+  </div>
+  <div className="bg-zinc-100 dark:bg-white/5 rounded-[2rem] border border-black/5 dark:border-white/10 p-6 flex flex-col items-center justify-center text-center">
+    <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-4">
+      <Sparkles className="w-6 h-6" />
+    </div>
+    <span className="text-sm font-black uppercase tracking-widest text-neutral-400">AI Powered</span>
+  </div>
+  <div className="bg-zinc-100 dark:bg-white/5 rounded-[2rem] border border-black/5 dark:border-white/10 p-6 flex flex-col items-center justify-center text-center">
+    <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-500 mb-4">
+      <Zap className="w-6 h-6" />
+    </div>
+    <span className="text-sm font-black uppercase tracking-widest text-neutral-400">Low Latency</span>
+  </div>
+</div>`,
+        preview: (
+            <div className="grid grid-cols-2 gap-2 h-48 w-full group">
+                <div className="bg-zinc-100 dark:bg-white/5 rounded-xl border border-black/5 dark:border-white/10 p-3 overflow-hidden relative">
+                    <img src="/images/glass-shapes.png" className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:scale-110 transition-transform" alt="" />
+                    <div className="relative z-10 w-2 h-2 bg-primary rounded-full mb-2" />
+                </div>
+                <div className="space-y-2">
+                    <div className="h-[45%] bg-primary rounded-xl" />
+                    <div className="h-[45%] bg-zinc-100 dark:bg-white/5 rounded-xl border border-black/5 dark:border-white/10" />
+                </div>
+            </div>
+        )
+    },
+    // --- E-COMMERCE HERO ---
+    {
+        id: "ecommerce-hero",
+        name: "E-commerce Premium Hero",
+        description: "A high-conversion hero section for fashion or product landing pages.",
+        category: "Landing Pages",
+        code: `<section className="relative h-[800px] w-full flex items-center justify-center overflow-hidden bg-zinc-50 dark:bg-[#09090b]">
+  <div className="absolute inset-0 bg-grid-black/[0.02] dark:bg-grid-white/[0.02]" />
+  <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary/20 rounded-full blur-[120px]" />
+  
+  <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 items-center gap-12 relative z-10">
+    <div className="text-left animate-in fade-in slide-in-from-left duration-1000">
+      <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 border border-primary/20 rounded-full text-[10px] font-black uppercase text-primary mb-8 tracking-widest">
+        Exclusive drop 2024
+      </div>
+      <h1 className="text-7xl md:text-9xl font-black mb-8 leading-[0.8] tracking-tighter">
+        AURA <br />
+        <span className="text-primary">ELITE.</span>
+      </h1>
+      <p className="text-xl text-neutral-500 font-medium mb-12 max-w-md">
+        Experience the future of comfort with the new Aurora series. Crafted for performance, styled for life.
+      </p>
+      <div className="flex flex-wrap gap-4">
+        <button className="px-10 py-5 bg-foreground text-background font-black rounded-2xl flex items-center gap-3 shadow-2xl hover:scale-105 active:scale-95 transition-transform">
+          Add to Cart <ShoppingBag className="w-5 h-5" />
+        </button>
+        <button className="px-10 py-5 bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 font-black rounded-2xl">
+          Learn More
+        </button>
+      </div>
+    </div>
+    
+    <div className="relative group perspective-1000">
+      <div className="absolute -inset-10 bg-primary/30 rounded-full blur-[80px] group-hover:scale-110 transition-transform duration-1000" />
+      <img 
+        src="/images/sneaker.png" 
+        className="relative z-10 w-full animate-float select-none drop-shadow-[0_20px_50px_rgba(124,58,237,0.4)]" 
+        alt="Product" 
+      />
+    </div>
+  </div>
+</section>`,
+        preview: (
+            <div className="h-48 w-full bg-zinc-50 dark:bg-white/5 rounded-2xl border border-black/5 dark:border-white/10 flex items-center justify-center overflow-hidden p-4">
+                <div className="text-[10px] space-y-2 translate-x-4 flex-1">
+                    <div className="h-4 w-20 bg-foreground rounded" />
+                    <div className="h-1 w-12 bg-neutral-300 dark:bg-neutral-700 rounded" />
+                </div>
+                <div className="flex-1 flex justify-center">
+                    <img src="/images/sneaker.png" className="w-24 h-24 object-contain animate-float" alt="" />
+                </div>
+            </div>
+        )
+    },
+    // --- 3D HOVER CARD ---
+    {
+        id: "3d-watch-card",
+        name: "3D Interactive Card",
+        description: "A card that tilts and reacts to mouse movements for a tactile feel.",
+        category: "Cards",
+        code: `const [rotate, setRotate] = useState({ x: 0, y: 0 });
+
+const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const rect = e.currentTarget.getBoundingClientRect();
+  const x = (e.clientY - rect.top) / rect.height - 0.5;
+  const y = (e.clientX - rect.left) / rect.width - 0.5;
+  setRotate({ x: x * 20, y: -y * 20 });
+};
+
+return (
+  <div 
+    onMouseMove={handleMouseMove}
+    onMouseLeave={() => setRotate({ x: 0, y: 0 })}
+    style={{ transform: \`perspective(1000px) rotateX(\${rotate.x}deg) rotateY(\${rotate.y}deg)\` }}
+    className="w-[380px] h-[500px] rounded-[3rem] bg-zinc-950 p-8 border border-white/10 shadow-2xl transition-all duration-200 ease-linear cursor-pointer overflow-hidden group"
+  >
+    <div className="absolute top-0 right-0 p-8">
+       <span className="text-white font-mono text-xs opacity-40">ITEM-4492</span>
+    </div>
+    <div className="mt-12">
+      <h3 className="text-white text-4xl font-black tracking-tighter">AETERNUM</h3>
+      <p className="text-neutral-500 font-medium">Automatic Swiss Edition</p>
+    </div>
+    
+    <div className="h-64 flex items-center justify-center relative scale-110 group-hover:scale-125 transition-transform duration-700">
+      <img 
+        src="/images/watch.png" 
+        className="w-full h-full object-cover mask-image-radial" 
+        alt="" 
+      />
+    </div>
+    
+    <div className="flex items-center justify-between mt-auto pt-6 border-t border-white/5">
+      <div className="text-white">
+        <span className="text-xs font-bold block opacity-40 uppercase">Price</span>
+        <span className="text-2xl font-black">$4,900</span>
+      </div>
+      <button className="h-12 w-12 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-all">
+        <ArrowRight className="w-5 h-5" />
+      </button>
+    </div>
+  </div>
+);`,
+        preview: (
+            <div className="w-32 h-48 bg-zinc-900 rounded-2xl border border-white/10 p-4 flex flex-col justify-between overflow-hidden group">
+                <div className="h-1 w-8 bg-white/20 rounded" />
+                <div className="flex-1 flex items-center justify-center">
+                    <img src="/images/watch.png" className="w-20 h-20 object-contain group-hover:scale-125 transition-transform" alt="" />
+                </div>
+                <div className="flex justify-between items-end">
+                    <div className="h-3 w-8 bg-white/40 rounded" />
+                    <div className="w-6 h-6 rounded-full bg-white" />
+                </div>
+            </div>
+        )
+    },
+    // --- PARALLAX HERO ---
+    {
+        id: "parallax-hero",
+        name: "Parallax Dynamic Hero",
+        description: "A scroll-interactive hero section with depth and movement.",
+        category: "Landing Pages",
+        code: `const { scrollY } = useScroll();
+const y1 = useTransform(scrollY, [0, 500], [0, 200]);
+const y2 = useTransform(scrollY, [0, 500], [0, -150]);
+
+return (
+  <div className="relative h-[100vh] overflow-hidden bg-background flex items-center justify-center">
+    <motion.div 
+      style={{ y: y1 }}
+      className="absolute inset-0 z-0 opacity-20"
+    >
+      <div className="grid grid-cols-6 gap-4 p-12">
+         {[...Array(24)].map((_, i) => (
+           <div key={i} className="h-32 bg-primary/10 rounded-3xl border border-primary/20 backdrop-blur-sm" />
+         ))}
+      </div>
+    </motion.div>
+
+    <div className="relative z-10 text-center px-4">
+      <motion.h1 
+        style={{ y: y2 }}
+        className="text-8xl md:text-[12rem] font-black tracking-tighter leading-none mb-12"
+      >
+        DEPTH <br />
+        <span className="text-gradient-vibrant">DESIGN.</span>
+      </motion.h1>
+      <p className="text-xl text-neutral-500 max-w-lg mx-auto font-medium">
+        Experience immersive browsing with our parallax-ready components. Built for maximum engagement.
+      </p>
+    </div>
+  </div>
+);`,
+        preview: (
+            <div className="h-48 w-full bg-zinc-50 dark:bg-white/5 rounded-2xl border border-black/5 dark:border-white/10 relative overflow-hidden flex flex-col items-center justify-center">
+                <div className="absolute top-0 w-full h-full space-y-2 opacity-10">
+                    <div className="h-10 w-full bg-primary" />
+                    <div className="h-10 w-full bg-purple-500" />
+                </div>
+                <div className="relative z-10 text-center">
+                    <div className="h-4 w-24 bg-foreground rounded mb-2 mx-auto" />
+                    <div className="h-2 w-16 bg-neutral-400 rounded mx-auto" />
+                </div>
+            </div>
+        )
+    },
+    // --- FULL LANDING BLOCK ---
+    {
+        id: "full-ecommerce-landing",
+        name: "Complete E-commerce Feature",
+        description: "A comprehensive block featuring product highlights, stats, and a CTA.",
+        category: "Landing Pages",
+        code: `<section className="py-24 bg-white dark:bg-[#09090b] overflow-hidden">
+  <div className="container mx-auto px-6">
+    <div className="flex flex-col lg:flex-row items-center gap-16 mb-32">
+       <div className="flex-1 space-y-10">
+          <div className="flex items-center gap-4">
+             <div className="h-px w-12 bg-primary"></div>
+             <span className="text-sm font-black text-primary uppercase tracking-[0.3em]">The Collection</span>
+          </div>
+          <h2 className="text-5xl md:text-7xl font-black tracking-tighter">Crafted with <br /> Precision.</h2>
+          <p className="text-xl text-neutral-500 leading-relaxed max-w-xl">
+             We don't just sell products; we deliver experiences. Every piece in our 2024 collection is vetted for quality and design excellence.
+          </p>
+          <div className="grid grid-cols-2 gap-8 py-8 border-y border-black/5 dark:border-white/5">
+             <div>
+                <span className="text-4xl font-black block mb-1">500k+</span>
+                <span className="text-sm text-neutral-400 font-bold uppercase">Happy Customers</span>
+             </div>
+             <div>
+                <span className="text-4xl font-black block mb-1">0.1s</span>
+                <span className="text-sm text-neutral-400 font-bold uppercase">Delivery Speed</span>
+             </div>
+          </div>
+          <button className="group flex items-center gap-4 text-xs font-black uppercase tracking-widest hover:text-primary transition-colors">
+             View Collections <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+          </button>
+       </div>
+       <div className="flex-1 relative">
+          <div className="absolute -inset-10 bg-primary/10 rounded-full blur-[100px]" />
+          <div className="relative grid grid-cols-2 gap-4">
+             <img src="/images/sneaker.png" className="rounded-3xl shadow-2xl hover:-translate-y-4 transition-transform duration-500" alt="" />
+             <img src="/images/watch.png" className="rounded-3xl shadow-2xl mt-12 hover:-translate-y-4 transition-transform duration-500" alt="" />
+          </div>
+       </div>
+    </div>
+  </div>
+</section>`,
+        preview: (
+            <div className="h-48 w-full bg-zinc-50 dark:bg-white/5 rounded-2xl border border-black/5 dark:border-white/10 p-4 flex gap-4 overflow-hidden">
+                <div className="flex-1 space-y-2">
+                    <div className="h-4 w-16 bg-primary rounded" />
+                    <div className="h-8 w-full bg-foreground rounded" />
+                    <div className="h-2 w-full bg-neutral-300 dark:bg-neutral-700 rounded" />
+                </div>
+                <div className="flex-1 grid grid-cols-2 gap-2">
+                    <img src="/images/sneaker.png" className="rounded-lg aspect-square object-cover" alt="" />
+                    <img src="/images/watch.png" className="rounded-lg aspect-square object-cover mt-4" alt="" />
+                </div>
+            </div>
+        )
+    },
+    // --- NEW PREMIUM COMPONENTS ---
+    {
+        id: "premium-command-menu",
+        name: "Command Palette (Spotlight)",
+        description: "A professional search and action menu for quick navigation.",
+        category: "Navigation",
+        code: `const [query, setQuery] = useState("");
+const items = [{ name: "Dashboard", desc: "View stats", icon: <Zap /> }, { name: "Settings", desc: "Manage account", icon: <Terminal /> }];
+
+return (
+  <div className="w-full max-w-lg bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden">
+    <div className="flex items-center gap-3 p-4 border-b border-black/5 dark:border-white/5 bg-black/[0.02] dark:bg-white/[0.02]">
+      <Search className="w-5 h-5 text-neutral-400" />
+      <input 
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        className="bg-transparent border-none outline-none text-sm w-full font-medium" 
+        placeholder="Search commands..." 
+      />
+      <div className="flex items-center gap-1">
+         <span className="text-[10px] bg-black/5 dark:bg-white/5 border border-black/10 px-1.5 py-0.5 rounded font-black opacity-40">⌘K</span>
+      </div>
+    </div>
+    <div className="p-2">
+      {items.filter(i => i.name.toLowerCase().includes(query.toLowerCase())).map((item, idx) => (
+        <div key={idx} className="group flex items-center gap-4 p-3 hover:bg-primary/10 rounded-xl cursor-pointer transition-all">
+           <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+              {item.icon}
+           </div>
+           <div className="flex-1">
+              <div className="text-sm font-black group-hover:text-primary transition-colors">{item.name}</div>
+              <div className="text-xs text-neutral-500 font-medium">{item.desc}</div>
+           </div>
+           <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+        </div>
+      ))}
+    </div>
+  </div>
+);`,
+        preview: <CommandMenuPreview />
+    },
+    {
+        id: "premium-interactive-tabs",
+        name: "Interactive Motion Tabs",
+        description: "Animated tab switching with a sliding focus background.",
+        category: "Navigation",
+        code: `const [active, setActive] = useState('Overview');
+const tabs = ['Overview', 'Analytics', 'Settings', 'Team'];
+
+return (
+  <div className="flex bg-zinc-100 dark:bg-white/5 p-1.5 rounded-[1.8rem] border border-black/5 dark:border-white/5 w-fit">
+    {tabs.map(tab => (
+      <button
+        key={tab}
+        onClick={() => setActive(tab)}
+        className={\`relative px-8 py-3 text-xs font-black rounded-[1.5rem] transition-all duration-500 \${active === tab ? 'text-primary' : 'text-neutral-500 hover:text-neutral-700'}\`}
+      >
+        {active === tab && (
+          <motion.div 
+            layoutId="tab-pill"
+            className="absolute inset-0 bg-white dark:bg-zinc-800 shadow-xl rounded-[1.5rem] z-0"
+            transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+          />
+        )}
+        <span className="relative z-10">{tab}</span>
+      </button>
+    ))}
+  </div>
+);`,
+        preview: <ModernTabsPreview />
+    },
+    {
+        id: "premium-slick-accordion",
+        name: "Elite Glass Accordion",
+        description: "A highly stylized accordion with deep focus states.",
+        category: "FAQ",
+        code: `const [open, setOpen] = useState(0);
+
+return (
+  <div className="space-y-4 w-full max-w-2xl">
+    {[1, 2, 3].map(i => (
+      <div 
+        key={i} 
+        className={\`group overflow-hidden rounded-[2.5rem] border transition-all duration-700 \${open === i ? 'bg-white dark:bg-zinc-900 border-primary shadow-[0_30px_60px_-15px_rgba(124,58,237,0.2)] scale-[1.02]' : 'bg-zinc-50 dark:bg-white/5 border-black/5 dark:border-white/5 hover:border-black/20'}\`}
+      >
+        <div 
+          onClick={() => setOpen(open === i ? 0 : i)}
+          className="flex items-center justify-between p-8 cursor-pointer"
+        >
+          <div className="flex items-center gap-6">
+             <span className={\`text-3xl font-black \${open === i ? 'text-primary' : 'text-neutral-300 opacity-20'}\`}>0{i}</span>
+             <h3 className="text-xl font-black tracking-tight">How do I integrate the premium API?</h3>
+          </div>
+          <div className={\`h-12 w-12 rounded-full flex items-center justify-center transition-all duration-500 \${open === i ? 'bg-primary text-white rotate-90' : 'bg-black/5 dark:bg-white/5'}\`}>
+             <ArrowRight className="w-5 h-5" />
+          </div>
+        </div>
+        <div className={\`px-8 pb-8 transition-all duration-700 \${open === i ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0'}\`}>
+          <p className="text-neutral-500 font-medium leading-relaxed border-t border-black/5 dark:border-white/5 pt-6">
+            Integrating our API is seamless. Simply generate your key from the dashboard and follow our 3-step quickstart guide. We support over 12 languages out of the box.
+          </p>
+        </div>
+      </div>
+    ))}
+  </div>
+);`,
+        preview: <SlickAccordionPreview />
+    },
+    {
+        id: "premium-glass-progress",
+        name: "Liquid Glass Progress",
+        description: "A progress bar with a liquid-like gradient and shimmer.",
+        category: "Feedback",
+        code: `const [progress, setProgress] = useState(74);
+
+return (
+  <div className="w-full max-w-md space-y-4 p-8 bg-zinc-50 dark:bg-white/5 border border-black/5 rounded-[2.5rem]">
+    <div onClick={() => setProgress(prev => prev === 100 ? 0 : prev + 10)} className="cursor-pointer">
+      <div className="flex justify-between items-baseline mb-4">
+        <h4 className="text-sm font-black uppercase tracking-widest text-neutral-400">Upload Process</h4>
+        <span className="text-4xl font-black text-primary tracking-tighter">{progress}%</span>
+      </div>
+      <div className="h-6 w-full bg-black/5 dark:bg-white/5 rounded-2xl border border-black/10 p-1.5 overflow-hidden backdrop-blur-xl relative">
+        <div 
+          style={{ width: \`\${progress}%\` }}
+          className="h-full bg-gradient-to-r from-primary via-purple-500 to-blue-500 rounded-xl shadow-[0_0_30px_rgba(124,58,237,0.5)] relative transition-all duration-500"
+        >
+           <div className="absolute inset-0 bg-white/20 animate-shimmer scale-x-[500%] origin-left" />
+        </div>
+      </div>
+    </div>
+  </div>
+);`,
+        preview: <GlassProgressPreview />
+    },
+    {
+        id: "premium-floating-fab",
+        name: "Smart Expansion FAB",
+        description: "A floating action button that reveals a menu on hover.",
+        category: "Buttons",
+        code: `<div className="relative group">
+  <div className="absolute bottom-full right-0 mb-4 flex flex-col items-end gap-3 scale-0 group-hover:scale-100 origin-bottom right transition-all duration-500 delay-100">
+    <button className="flex items-center gap-3 px-4 py-2 bg-white dark:bg-zinc-800 border border-black/10 rounded-full shadow-2xl text-xs font-black whitespace-nowrap">
+      <Github className="w-4 h-4" /> View Source
+    </button>
+    <button className="flex items-center gap-3 px-4 py-2 bg-white dark:bg-zinc-800 border border-black/10 rounded-full shadow-2xl text-xs font-black whitespace-nowrap">
+      <ArrowRight className="w-4 h-4" /> Go to Docs
+    </button>
+  </div>
+  <button className="h-16 w-16 bg-primary text-white rounded-[1.8rem] shadow-[0_20px_40px_-10px_rgba(124,58,237,0.5)] flex items-center justify-center hover:scale-110 active:scale-90 transition-all cursor-pointer group-hover:rotate-12">
+    <Plus className="w-8 h-8" />
+  </button>
+</div>`,
+        preview: <FloatingActionPreview />
+    },
+    {
+        id: "premium-metric-card",
+        name: "Insight Metric Card",
+        description: "A data-driven card with trend indicators and a mini chart.",
+        category: "Dashboards",
+        code: `<div className="w-[300px] p-8 bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 rounded-[3rem] shadow-2xl relative overflow-hidden group">
+  <div className="absolute top-0 right-0 p-8">
+     <div className="p-2 bg-emerald-500/10 text-emerald-500 rounded-xl flex items-center gap-1">
+        <ArrowRight className="-rotate-45 w-4 h-4" />
+        <span className="text-[10px] font-black underline decoration-2">+12.4%</span>
+     </div>
+  </div>
+  <div className="space-y-1 mb-8">
+    <span className="text-xs font-black uppercase tracking-widest text-neutral-400">Total Revenue</span>
+    <h3 className="text-5xl font-black tracking-tighter">$48.2k</h3>
+  </div>
+  <div className="flex items-end gap-1 h-12">
+     {[40, 70, 45, 90, 65, 80, 55, 95].map((h, i) => (
+       <div key={i} className="flex-1 bg-primary/20 rounded-full relative group/bar">
+          <div className="absolute bottom-0 w-full bg-primary rounded-full transition-all duration-1000 group-hover:bg-purple-500" style={{ height: \`\${h}%\` }} />
+       </div>
+     ))}
+  </div>
+</div>`,
+        preview: (
+            <div className="w-32 h-40 bg-white dark:bg-zinc-900 rounded-3xl border border-black/10 p-4 flex flex-col justify-between">
+                <div className="space-y-1">
+                    <div className="h-1 w-8 bg-neutral-200 rounded" />
+                    <div className="h-4 w-12 bg-foreground rounded" />
+                </div>
+                <div className="flex items-end gap-1 h-4">
+                    {[3, 6, 4, 8, 5].map((h, i) => <div key={i} className="flex-1 bg-primary rounded-full" style={{ height: `${h * 10}%` }} />)}
+                </div>
+            </div>
+        )
+    },
+    {
+        id: "premium-feature-alert",
+        name: "Dynamic Glass Alert",
+        description: "A floating alert with vibrant colors and rich depth.",
+        category: "Feedback",
+        code: `const [visible, setVisible] = useState(true);
+
+if (!visible) return <button onClick={() => setVisible(true)}>Show Alert</button>;
+
+return (
+  <div className="relative group max-w-md scale-in-center">
+    <div className="absolute -inset-1 bg-gradient-to-r from-primary to-purple-600 rounded-[2.2rem] blur opacity-25" />
+    <div className="relative px-8 py-6 bg-white dark:bg-[#09090b] ring-1 ring-black/5 rounded-[2.1rem] flex items-center gap-6">
+      <div className="h-14 w-14 bg-primary text-white rounded-2xl flex items-center justify-center shrink-0 shadow-xl">
+         <Rocket className="w-8 h-8" />
+      </div>
+      <div className="space-y-2">
+         <p className="text-sm font-black tracking-tight">Deploy successful!</p>
+         <p className="text-xs text-neutral-500 font-medium">Auto-scaling complete.</p>
+      </div>
+      <button onClick={() => setVisible(false)} className="ml-auto p-2 opacity-50 hover:opacity-100">
+         <X className="w-4 h-4" />
+      </button>
+    </div>
+  </div>
+);`,
+        preview: <ModernAlertPreview />
+    },
+    // --- CHART COMPONENTS ---
+    {
+        id: "premium-radial-chart",
+        name: "Interactive Radial Chart",
+        description: "A smooth, SVG-driven circular progress chart for metrics.",
+        category: "Dashboards",
+        code: `const [val, setVal] = useState(75);
+
+return (
+  <div className="relative flex flex-col items-center justify-center p-12 bg-white dark:bg-zinc-900 border border-black/10 rounded-[3rem] shadow-2xl w-fit cursor-pointer group" onClick={() => setVal(v => v === 100 ? 25 : v + 25)}>
+    <svg className="w-48 h-48 transform -rotate-90">
+      <circle cx="96" cy="96" r="80" fill="transparent" stroke="currentColor" strokeWidth="12" className="text-neutral-100 dark:text-white/5" />
+      <circle 
+        cx="96" cy="96" r="80" fill="transparent" stroke="currentColor" strokeWidth="12" 
+        strokeDasharray={502.6}
+        strokeDashoffset={502.6 - (val / 100) * 502.6}
+        strokeLinecap="round"
+        className="text-primary transition-all duration-1000 ease-out drop-shadow-[0_0_15px_rgba(124,58,237,0.5)]" 
+      />
+    </svg>
+    <div className="absolute inset-0 flex flex-col items-center justify-center pt-4">
+      <span className="text-6xl font-black text-foreground tracking-tighter">{val}%</span>
+      <span className="text-xs font-black uppercase tracking-widest text-neutral-400">Total Utilization</span>
+    </div>
+  </div>
+);`,
+        preview: <RadialChartPreview />
+    },
+    {
+        id: "premium-area-line-chart",
+        name: "Revenue Area Chart",
+        description: "A high-fidelity bar/line chart with hover interactions.",
+        category: "Dashboards",
+        code: `const [data, setData] = useState([30, 45, 60, 35, 80, 50, 95, 70, 85, 60, 40, 90]);
+const shuffle = () => setData(data.map(() => Math.floor(Math.random() * 80) + 10));
+
+return (
+  <div className="w-full max-w-2xl p-8 bg-white dark:bg-zinc-900 border border-black/10 rounded-[3rem] shadow-2xl space-y-10 cursor-pointer" onClick={shuffle}>
+    <div className="flex justify-between items-start">
+      <div className="space-y-2">
+         <span className="text-xs font-black uppercase tracking-widest text-neutral-400">Net Revenue</span>
+         <h3 className="text-5xl font-black tracking-tighter">$148,429.30</h3>
+      </div>
+      <div className="p-3 bg-emerald-500/10 text-emerald-500 rounded-2xl flex items-center gap-2 text-sm font-black transition-all hover:scale-105">
+         <TrendingUp className="w-5 h-5" /> +14.2% from last month
+      </div>
+    </div>
+    
+    <div className="h-64 w-full flex items-end gap-3 px-4">
+      {data.map((h, i) => (
+        <div key={i} className="flex-1 bg-black/5 dark:bg-white/5 rounded-2xl relative group/bar h-full">
+           <div 
+             className="absolute bottom-0 w-full bg-primary rounded-2xl transition-all duration-700 group-hover:bg-purple-500" 
+             style={{ height: \`\${h}%\` }} 
+           />
+        </div>
+      ))}
+    </div>
+  </div>
+);`,
+        preview: <LineChartPreview />
+    },
+    {
+        id: "premium-donut-pie-chart",
+        name: "Distribution Pie Chart",
+        description: "A modern donut chart for categorical data overview.",
+        category: "Dashboards",
+        code: `const [segments, setSegments] = useState([125, 376, 452]);
+const shuffle = () => setSegments(segments.map(() => Math.floor(Math.random() * 300)));
+
+return (
+  <div onClick={shuffle} className="w-full max-w-lg p-10 bg-white dark:bg-zinc-900 border border-black/10 rounded-[3.5rem] shadow-2xl flex flex-col md:flex-row items-center gap-12 cursor-pointer group">
+    <div className="relative w-48 h-48">
+      <svg className="w-full h-full transform -rotate-90">
+        <circle cx="96" cy="96" r="80" fill="transparent" stroke="#7c3aed" strokeWidth="32" strokeDasharray="502.6" strokeDashoffset={segments[0]} className="transition-all duration-1000" />
+        <circle cx="96" cy="96" r="80" fill="transparent" stroke="#3b82f6" strokeWidth="32" strokeDasharray="502.6" strokeDashoffset={segments[1]} className="transition-all duration-1000" />
+        <circle cx="96" cy="96" r="80" fill="transparent" stroke="#22c55e" strokeWidth="32" strokeDasharray="502.6" strokeDashoffset={segments[2]} className="transition-all duration-1000" />
+      </svg>
+    </div>
+    <div className="space-y-4 flex-1 w-full">
+      <h4 className="text-xs font-black uppercase tracking-[0.2em] text-neutral-400 mb-6">Real-time Metrics</h4>
+      {['Direct', 'Social', 'Referral'].map((label, i) => (
+        <div key={label} className="space-y-1">
+          <span className="text-[10px] font-black uppercase">{label}</span>
+          <div className="h-1.5 w-full bg-black/5 rounded-full overflow-hidden">
+             <div className="h-full bg-primary transition-all duration-1000" style={{ width: \`\${Math.floor(Math.random() * 60) + 20}%\` }} />
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+);`,
+        preview: <PieChartPreview />
+    },
+    {
+        id: "premium-polyline-chart",
+        name: "Interactive Polyline Chart",
+        description: "A smooth SVG polyline chart with multiple data layers and gradients.",
+        category: "Dashboards",
+        code: `const [path, setPath] = useState("M0,180 Q100,20 200,140 T400,20 T600,160 T800,40 T1000,100");
+const paths = [
+  "M0,180 Q100,20 200,140 T400,20 T600,160 T800,40 T1000,100",
+  "M0,150 Q150,10 300,180 T500,120 T700,170 T900,130 T1000,170",
+  "M0,180 Q150,50 300,150 T600,20 T900,180 T1000,10"
+];
+
+return (
+  <div onClick={() => setPath(paths[Math.floor(Math.random() * paths.length)])} className="w-full max-w-2xl p-10 bg-white dark:bg-[#09090b] border border-black/10 dark:border-white/10 rounded-[3.5rem] shadow-2xl relative overflow-hidden group cursor-pointer">
+    <div className="h-64 w-full relative">
+       <svg className="w-full h-full overflow-visible" viewBox="0 0 1000 200">
+          <path d={path} fill="none" stroke="#7c3aed" strokeWidth="6" strokeLinecap="round" className="drop-shadow-[0_0_15px_rgba(124,58,237,0.5)] transition-all duration-700" />
+       </svg>
+    </div>
+  </div>
+);`,
+        preview: <InteractiveLineChartPreview />
+    },
+    {
+        id: "premium-activity-rings",
+        name: "Activity Health Rings",
+        description: "Multi-layered circular charts inspired by health tracking interfaces.",
+        category: "Dashboards",
+        code: `const [rings, setRings] = useState([120, 150, 80]);
+const shuffle = () => setRings(rings.map(() => Math.floor(Math.random() * 400)));
+
+return (
+  <div onClick={shuffle} className="w-full max-w-sm p-10 bg-white dark:bg-zinc-900 border border-black/10 rounded-[3.5rem] shadow-2xl flex flex-col items-center cursor-pointer group">
+    <div className="relative w-64 h-64 mb-10">
+       <svg className="w-full h-full transform -rotate-90 overflow-visible">
+          <circle cx="128" cy="128" r="100" fill="transparent" stroke="currentColor" strokeWidth="20" className="text-primary/10" />
+          <circle cx="128" cy="128" r="100" fill="transparent" stroke="#7c3aed" strokeWidth="20" strokeDasharray="628" strokeDashoffset={rings[0]} strokeLinecap="round" className="drop-shadow-[0_0_15px_rgba(124,58,237,0.5)] transition-all duration-1000" />
+          
+          <circle cx="128" cy="128" r="75" fill="transparent" stroke="currentColor" strokeWidth="20" className="text-secondary/10" />
+          <circle cx="128" cy="128" r="75" fill="transparent" stroke="#ec4899" strokeWidth="20" strokeDasharray="471" strokeDashoffset={rings[1]} strokeLinecap="round" className="drop-shadow-[0_0_15px_rgba(236,72,153,0.5)] transition-all duration-1000" />
+          
+          <circle cx="128" cy="128" r="50" fill="transparent" stroke="currentColor" strokeWidth="20" className="text-blue-500/10" />
+          <circle cx="128" cy="128" r="50" fill="transparent" stroke="#3b82f6" strokeWidth="20" strokeDasharray="314" strokeDashoffset={rings[2]} strokeLinecap="round" className="drop-shadow-[0_0_15px_rgba(59,130,246,0.5)] transition-all duration-1000" />
+       </svg>
+    </div>
+    <div className="grid grid-cols-3 gap-8 w-full">
+       <div className="text-center"><span className="text-primary font-black text-xl block">Activity</span></div>
+       <div className="text-center"><span className="text-secondary font-black text-xl block">Health</span></div>
+       <div className="text-center"><span className="text-blue-500 font-black text-xl block">Sleep</span></div>
+    </div>
+  </div>
+);`,
+        preview: <ActivityRingsPreview />
+    },
+    {
+        id: "premium-stacked-revenue",
+        name: "Stacked Revenue Columns",
+        description: "Elegant stacked bar charts for comparing multiple data streams.",
+        category: "Dashboards",
+        code: `const [data, setData] = useState([{s:40, v:35}, {s:55, v:25}, {s:30, v:50}, {s:65, v:20}]);
+const shuffle = () => setData(data.map(() => ({ s: Math.floor(Math.random() * 50) + 10, v: Math.floor(Math.random() * 40) + 10 })));
+
+return (
+  <div onClick={shuffle} className="w-full max-w-2xl p-10 bg-white dark:bg-zinc-900 border border-black/10 rounded-[3.5rem] shadow-2xl cursor-pointer">
+    <div className="h-48 w-full flex items-end gap-6 px-4">
+       {data.map((d, i) => (
+          <div key={i} className="flex-1 flex flex-col justify-end gap-2 h-full group">
+             <div className="w-full bg-blue-500/80 rounded-xl transition-all duration-700 hover:bg-blue-500" style={{ height: \`\${d.v}%\` }} />
+             <div className="w-full bg-primary/80 rounded-xl transition-all duration-700 hover:bg-primary" style={{ height: \`\${d.s}%\` }} />
+          </div>
+       ))}
+    </div>
+  </div>
+);`,
+        preview: <StackedColumnPreview />
     }
 ];
 
