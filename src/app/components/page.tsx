@@ -66,7 +66,10 @@ function ComponentsContent() {
                     {categories.map((cat) => (
                         <button
                             key={cat}
-                            onClick={() => setActiveCategory(cat)}
+                            onClick={() => {
+                                setActiveCategory(cat);
+                                window.dispatchEvent(new CustomEvent("close-all-code-modals", { detail: null }));
+                            }}
                             className={`px-6 py-2 rounded-2xl border text-sm font-bold transition-all whitespace-nowrap ${activeCategory === cat
                                 ? "bg-primary border-primary text-primary-foreground shadow-[0_0_20px_rgba(124,58,237,0.3)] scale-105"
                                 : "border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 hover:border-black/20 dark:hover:border-white/20 text-neutral-500 dark:text-neutral-400 hover:text-foreground"

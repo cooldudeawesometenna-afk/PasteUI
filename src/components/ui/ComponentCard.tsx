@@ -86,14 +86,20 @@ ${code.trim()}`;
                 </div>
                 <div className="flex gap-1 p-1 bg-black/5 dark:bg-black/60 rounded-2xl border border-black/5 dark:border-white/5 self-start sm:self-auto">
                     <button
-                        onClick={() => setActiveTab("preview")}
+                        onClick={() => {
+                            setActiveTab("preview");
+                            setIsModalOpen(false);
+                        }}
                         className={`px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${activeTab === "preview" ? "bg-primary text-primary-foreground shadow-lg" : "text-neutral-500 hover:text-foreground"
                             }`}
                     >
                         <Eye className="w-3.5 h-3.5" /> <span className="hidden xs:inline">Preview</span>
                     </button>
                     <button
-                        onClick={() => setActiveTab("code")}
+                        onClick={() => {
+                            setActiveTab("code");
+                            setIsModalOpen(false);
+                        }}
                         className={`px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${activeTab === "code" ? "bg-primary text-primary-foreground shadow-lg" : "text-neutral-500 hover:text-foreground"
                             }`}
                     >
