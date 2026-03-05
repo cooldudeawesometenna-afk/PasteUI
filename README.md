@@ -42,7 +42,7 @@ From glassmorphic cards to complex SaaS dashboards, every component is crafted w
 
 1.  **Clone the repository**:
     ```bash
-    git clone https://github.com/your-username/PasteUI.git
+    git clone https://github.com/shayanshahDeveloper/PasteUI.git
     cd PasteUI
     ```
 
