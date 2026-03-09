@@ -35,15 +35,23 @@ export const Navbar = () => {
 
                 {/* Desktop Nav */}
                 <div className="hidden md:flex items-center gap-6">
-                    <Link href="/components" className="text-sm font-bold text-neutral-500 dark:text-neutral-400 hover:text-foreground transition-colors">
+                    <Link href="/components" className="text-sm font-semibold text-neutral-500 hover:text-foreground transition-colors">
                         Components
                     </Link>
-
-                    <Link href="/showcase" className="text-sm font-bold text-neutral-500 dark:text-neutral-400 hover:text-foreground transition-colors">
+                    <Link href="/showcase" className="text-sm font-semibold text-neutral-500 hover:text-foreground transition-colors">
                         Showcase
                     </Link>
-                    <Link href="/docs" className="text-sm font-bold text-neutral-500 dark:text-neutral-400 hover:text-foreground transition-colors">
-                        Design System
+                    <Link href="/docs" className="text-sm font-semibold text-neutral-500 hover:text-foreground transition-colors">
+                        Docs
+                    </Link>
+                    <Link href="/contact" className="text-sm font-semibold text-neutral-500 hover:text-foreground transition-colors">
+                        Contact
+                    </Link>
+                    <Link href="/privacy" className="text-sm font-semibold text-neutral-500 hover:text-foreground transition-colors">
+                        Privacy
+                    </Link>
+                    <Link href="/terms" className="text-sm font-semibold text-neutral-500 hover:text-foreground transition-colors">
+                        Terms
                     </Link>
                 </div>
 
@@ -92,15 +100,23 @@ export const Navbar = () => {
                         className="md:hidden border-t border-black/10 dark:border-white/5 bg-background overflow-hidden"
                     >
                         <div className="flex flex-col p-4 gap-4">
-                            <Link href="/components" onClick={() => setIsOpen(false)} className="text-lg font-medium">
+                            <Link href="/components" onClick={() => setIsOpen(false)} className="text-lg font-bold">
                                 Components
                             </Link>
-
-                            <Link href="/showcase" onClick={() => setIsOpen(false)} className="text-lg font-medium">
+                            <Link href="/showcase" onClick={() => setIsOpen(false)} className="text-lg font-bold">
                                 Showcase
                             </Link>
-                            <Link href="/docs" onClick={() => setIsOpen(false)} className="text-lg font-medium">
+                            <Link href="/docs" onClick={() => setIsOpen(false)} className="text-lg font-bold">
                                 Docs
+                            </Link>
+                            <Link href="/contact" onClick={() => setIsOpen(false)} className="text-lg font-bold">
+                                Contact
+                            </Link>
+                            <Link href="/privacy" onClick={() => setIsOpen(false)} className="text-lg font-bold">
+                                Privacy
+                            </Link>
+                            <Link href="/terms" onClick={() => setIsOpen(false)} className="text-lg font-bold">
+                                Terms
                             </Link>
                             <div className="flex items-center gap-4 pt-4 border-t border-black/10 dark:border-white/5">
                                 <Link

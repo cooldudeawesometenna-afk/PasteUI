@@ -2,6 +2,7 @@
 
 import React, { Suspense, useEffect, useRef } from "react";
 import { Navbar } from "@/components/sections/Navbar";
+import { Footer } from "@/components/sections/Footer";
 import { Sidebar } from "@/components/sections/Sidebar";
 import gsap from "gsap";
 import { BookOpen, Code2, Rocket, Zap, Palette, Terminal, Copy } from "lucide-react";
@@ -132,6 +133,7 @@ export default function DocsPage() {
                     </div>
                 </div>
             </div>
+            <Footer />
         </main>
     );
 }

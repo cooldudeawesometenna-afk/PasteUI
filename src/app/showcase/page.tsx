@@ -2,6 +2,7 @@
 
 import React, { Suspense, useEffect, useRef } from "react";
 import { Navbar } from "@/components/sections/Navbar";
+import { Footer } from "@/components/sections/Footer";
 import { Sidebar } from "@/components/sections/Sidebar";
 import gsap from "gsap";
 import { ExternalLink, Star, Compass } from "lucide-react";
@@ -120,6 +121,7 @@ export default function ShowcasePage() {
                     </div>
                 </div>
             </div>
+            <Footer />
         </main>
     );
 }

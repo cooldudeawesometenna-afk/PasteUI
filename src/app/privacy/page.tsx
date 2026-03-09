@@ -1,4 +1,5 @@
 import { Navbar } from "@/components/sections/Navbar";
+import { Footer } from "@/components/sections/Footer";
 
 export default function PrivacyPage() {
     const sections = [
@@ -21,7 +22,7 @@ export default function PrivacyPage() {
             <Navbar />
             <div className="container mx-auto px-4 pt-32 pb-20">
                 <div className="max-w-3xl mx-auto">
-                    <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-8 italic">
+                    <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-8">
                         Privacy <span className="text-gradient-vibrant">Policy</span>
                     </h1>
                     <p className="text-xl text-neutral-500 mb-12 font-medium leading-relaxed">
@@ -31,17 +32,18 @@ export default function PrivacyPage() {
                     <div className="space-y-12">
                         {sections.map((section, i) => (
                             <div key={i} className="p-8 bg-black/[0.02] dark:bg-white/[0.01] border border-black/[0.05] dark:border-white/[0.05] rounded-[2.5rem] hover:border-primary/50 transition-colors">
-                                <h2 className="text-2xl font-black mb-4 tracking-tight">{section.title}</h2>
-                                <p className="text-neutral-600 dark:text-neutral-400 font-medium leading-[1.8]">{section.content}</p>
+                                <h2 className="text-2xl font-bold mb-4 tracking-tight">{section.title}</h2>
+                                <p className="text-neutral-600 dark:text-neutral-400 font-normal leading-[1.8]">{section.content}</p>
                             </div>
                         ))}
                     </div>
 
                     <div className="mt-20 p-8 bg-primary/5 rounded-[2.5rem] border border-primary/10">
-                        <p className="text-sm font-bold text-primary italic">Questions? Reach out via GitHub in the issues section.</p>
+                        <p className="text-sm font-bold text-primary">Questions? Reach out via GitHub in the issues section.</p>
                     </div>
                 </div>
             </div>
+            <Footer />
         </main>
     );
 }

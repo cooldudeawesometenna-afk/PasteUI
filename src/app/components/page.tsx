@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, Suspense, useRef } from "react";
 import { Navbar } from "@/components/sections/Navbar";
+import { Footer } from "@/components/sections/Footer";
 import { Sidebar } from "@/components/sections/Sidebar";
 import { componentsData } from "@/data/components";
 import { ComponentCard } from "@/components/ui/ComponentCard";
@@ -174,6 +175,7 @@ export default function ComponentsPage() {
                     <ComponentsContent />
                 </Suspense>
             </div>
+            <Footer />
         </main>
     );
 }
