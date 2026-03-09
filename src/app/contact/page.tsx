@@ -1,10 +1,40 @@
 "use client";
 
+import React, { useRef, useState } from "react";
 import { Navbar } from "@/components/sections/Navbar";
 import { Footer } from "@/components/sections/Footer";
-import { Mail, Github, Twitter, MapPin } from "lucide-react";
+import { Mail, Github, Twitter, MapPin, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+import emailjs from "@emailjs/browser";
 
 export default function ContactPage() {
+    const form = useRef<HTMLFormElement>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+    const sendEmail = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!form.current) return;
+
+        setIsSubmitting(true);
+        setStatus('idle');
+
+        try {
+            await emailjs.sendForm(
+                process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '',
+                process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || '',
+                form.current,
+                process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ''
+            );
+            setStatus('success');
+            form.current.reset();
+        } catch (error) {
+            console.error("EmailJS Error:", error);
+            setStatus('error');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
     const contactMethods = [
         {
             icon: <Mail className="w-6 h-6" />,
@@ -83,27 +113,58 @@ export default function ContactPage() {
                                 </div>
                             </div>
 
-                            <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+                            <form ref={form} className="space-y-4" onSubmit={sendEmail}>
                                 <div className="grid gap-4">
                                     <input 
                                         type="text" 
+                                        name="user_name"
                                         placeholder="Full Name"
+                                        required
                                         className="w-full px-6 py-4 bg-white dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-2xl focus:outline-none focus:border-primary transition-colors font-normal"
                                     />
                                     <input 
                                         type="email" 
+                                        name="user_email"
                                         placeholder="Email Address"
+                                        required
                                         className="w-full px-6 py-4 bg-white dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-2xl focus:outline-none focus:border-primary transition-colors font-normal"
                                     />
                                 </div>
                                 <textarea 
+                                    name="message"
                                     placeholder="Your Message"
                                     rows={4}
+                                    required
                                     className="w-full px-6 py-4 bg-white dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-2xl focus:outline-none focus:border-primary transition-colors font-normal resize-none"
                                 />
-                                <button className="w-full py-4 bg-primary text-primary-foreground font-bold rounded-2xl hover:opacity-90 transition-opacity">
-                                    Send Message
+                                <button 
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    className="w-full py-4 bg-primary text-primary-foreground font-bold rounded-2xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50"
+                                >
+                                    {isSubmitting ? (
+                                        <>
+                                            <Loader2 className="w-5 h-5 animate-spin" />
+                                            Sending...
+                                        </>
+                                    ) : (
+                                        "Send Message"
+                                    )}
                                 </button>
+
+                                {status === 'success' && (
+                                    <div className="flex items-center gap-2 text-green-500 font-bold bg-green-500/10 p-4 rounded-xl animate-in fade-in slide-in-from-top-2">
+                                        <CheckCircle2 className="w-5 h-5" />
+                                        Message sent successfully!
+                                    </div>
+                                )}
+
+                                {status === 'error' && (
+                                    <div className="flex items-center gap-2 text-red-500 font-bold bg-red-500/10 p-4 rounded-xl animate-in fade-in slide-in-from-top-2">
+                                        <AlertCircle className="w-5 h-5" />
+                                        Failed to send message. Please try again.
+                                    </div>
+                                )}
                             </form>
                         </div>
                     </div>
